@@ -1,0 +1,117 @@
+import * as pubRepo from '../repositories/publicacion.repository.js';
+import * as proyRepo from '../repositories/proyecto.repository.js';
+import * as patRepo from '../repositories/patente.repository.js';
+import { pool } from '../config/database.js';
+
+/**
+ * Servicio para el verbo ListSets.
+ * Retorna sets jerarquicos:
+ *   - publicacion:<tipo>
+ *   - proyecto:<tipo>
+ *   - patente:<tipo>
+ *   - facultad:<id>
+ *   - ocde:<codigo>
+ */
+export async function handleListSets() {
+  // Ejecutar todas las consultas en paralelo
+  const [pubSets, proySets, patSets, facultades, ocdeAreas] = await Promise.all([
+    pubRepo.getDistinctSets(),
+    proyRepo.getDistinctSets(),
+    patRepo.getDistinctSets(),
+    pool.query('SELECT id, nombre FROM Facultad ORDER BY nombre ASC'),
+    pool.query(
+      `SELECT codigo, linea FROM Ocde WHERE parent_id IS NULL ORDER BY codigo ASC`,
+    ),
+  ]);
+
+  const sets = [];
+
+  // ── Sets de publicaciones ──
+  sets.push({
+    setSpec: 'publicacion',
+    setName: 'Publicaciones',
+    setDescription: 'Todas las publicaciones de investigacion de RAIS UNMSM',
+  });
+  for (const tipo of pubSets) {
+    sets.push({
+      setSpec: `publicacion:${tipo}`,
+      setName: `Publicaciones - ${capitalize(tipo)}`,
+    });
+  }
+
+  // ── Sets de proyectos ──
+  sets.push({
+    setSpec: 'proyecto',
+    setName: 'Proyectos de Investigacion',
+    setDescription: 'Todos los proyectos de investigacion de RAIS UNMSM',
+  });
+  for (const tipo of proySets) {
+    sets.push({
+      setSpec: `proyecto:${tipo}`,
+      setName: `Proyectos - ${getProyectoTipoNombre(tipo)}`,
+    });
+  }
+
+  // ── Sets de patentes ──
+  sets.push({
+    setSpec: 'patente',
+    setName: 'Patentes y Propiedad Intelectual',
+    setDescription: 'Patentes y registros de propiedad intelectual',
+  });
+  for (const tipo of patSets) {
+    sets.push({
+      setSpec: `patente:${tipo}`,
+      setName: `Patentes - ${capitalize(tipo)}`,
+    });
+  }
+
+  // ── Sets por facultad ──
+  for (const fac of facultades[0]) {
+    sets.push({
+      setSpec: `facultad:${fac.id}`,
+      setName: `Facultad de ${fac.nombre}`,
+    });
+  }
+
+  // ── Sets por area OCDE ──
+  for (const ocde of ocdeAreas[0]) {
+    sets.push({
+      setSpec: `ocde:${ocde.codigo}`,
+      setName: `OCDE: ${ocde.linea}`,
+    });
+  }
+
+  return {
+    verb: 'ListSets',
+    sets,
+  };
+}
+
+function capitalize(str) {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+const PROYECTO_TIPOS = {
+  PCONFIGI: 'Con financiamiento',
+  PSINFINV: 'Sin financiamiento (Investigacion)',
+  PSINFIPU: 'Sin financiamiento (Publicacion)',
+  PTPGRADO: 'Tesis Pregrado',
+  PTPMAEST: 'Tesis Maestria',
+  PTPDOCTO: 'Tesis Doctorado',
+  PTPBACHILLER: 'Tesis Bachiller',
+  PEVENTO: 'Eventos Academicos',
+  PINVPOS: 'Talleres Investigacion y Posgrado',
+  ECI: 'Equipamiento Cientifico',
+  PMULTI: 'Multidisciplinario',
+  PFEX: 'Fondo Externo',
+  PINTERDIS: 'Interdisciplinario',
+  RFPLU: 'Fondo RFPLU',
+  SPINOFF: 'Spin-Off',
+  'PRO-CTIE': 'PRO-CTIE',
+  PICV: 'PICV',
+};
+
+function getProyectoTipoNombre(tipo) {
+  return PROYECTO_TIPOS[tipo] ?? tipo;
+}

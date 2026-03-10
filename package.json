@@ -1,0 +1,30 @@
+{
+  "name": "rais-api",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "API OAI-PMH JSON para RAIS UNMSM - Exposición de datos de investigación a CONCYTEC/PerúCRIS",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
+  },
+  "keywords": [
+    "oai-pmh",
+    "rais",
+    "unmsm",
+    "concytec"
+  ],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.27.0",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "mysql2": "^3.19.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
