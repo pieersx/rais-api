@@ -33,7 +33,6 @@ El sistema consumirá datos de las siguientes tablas existentes:
 
 1. **`Publicacion`**:
 
-
 2. **`Publicacion_categoria`**:
 
 3. **`Publicacion_autor`**:
