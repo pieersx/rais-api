@@ -73,7 +73,7 @@ export function buildResumptionToken({ cursor, pageSize, completeListSize, set, 
     set: set ?? null,
     from: from ?? null,
     until: until ?? null,
-    metadataPrefix: metadataPrefix ?? 'oai_dc',
+    metadataPrefix: metadataPrefix ?? 'oai_cerif',
   });
 
   return {
@@ -102,7 +102,7 @@ export function extractPaginationParams(oaiParams) {
       set: decoded.set,
       from: decoded.from,
       until: decoded.until,
-      metadataPrefix: decoded.metadataPrefix ?? 'oai_dc',
+      metadataPrefix: decoded.metadataPrefix ?? 'oai_cerif',
       pageSize,
       _multiEntity: decoded._multiEntity ?? null,
     };
@@ -113,7 +113,7 @@ export function extractPaginationParams(oaiParams) {
     set: oaiParams.set ?? null,
     from: oaiParams.from ?? null,
     until: oaiParams.until ?? null,
-    metadataPrefix: oaiParams.metadataPrefix ?? 'oai_dc',
+    metadataPrefix: oaiParams.metadataPrefix ?? 'oai_cerif',
     pageSize,
     _multiEntity: null,
   };

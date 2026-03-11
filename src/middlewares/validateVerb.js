@@ -13,7 +13,7 @@ const VALID_VERBS = [
   'GetRecord',
 ];
 
-const VALID_METADATA_PREFIXES = ['oai_dc'];
+const VALID_METADATA_PREFIXES = ['oai_cerif'];
 
 /**
  * Schema base: el query param "verb" es obligatorio.

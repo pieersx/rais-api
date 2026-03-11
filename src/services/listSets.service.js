@@ -1,23 +1,28 @@
 import * as pubRepo from '../repositories/publicacion.repository.js';
 import * as proyRepo from '../repositories/proyecto.repository.js';
 import * as patRepo from '../repositories/patente.repository.js';
+import * as personaRepo from '../repositories/persona.repository.js';
+import * as orgunitRepo from '../repositories/orgunit.repository.js';
 import { pool } from '../config/database.js';
 
 /**
  * Servicio para el verbo ListSets.
- * Retorna sets jerarquicos:
+ * Retorna sets jerarquicos para las 5 entidades:
  *   - publicacion:<tipo>
  *   - proyecto:<tipo>
  *   - patente:<tipo>
- *   - facultad:<id>
- *   - ocde:<codigo>
+ *   - persona / persona:facultad-<id>
+ *   - orgunit / orgunit:facultad / orgunit:instituto / orgunit:grupo
+ *   - facultad:<id>    (cross-entity: publicaciones + proyectos de la facultad)
+ *   - ocde:<codigo>    (cross-entity: publicaciones + proyectos del area OCDE)
  */
 export async function handleListSets() {
   // Ejecutar todas las consultas en paralelo
-  const [pubSets, proySets, patSets, facultades, ocdeAreas] = await Promise.all([
+  const [pubSets, proySets, patSets, personaSets, facultades, ocdeAreas] = await Promise.all([
     pubRepo.getDistinctSets(),
     proyRepo.getDistinctSets(),
     patRepo.getDistinctSets(),
+    personaRepo.getDistinctSets(),
     pool.query('SELECT id, nombre FROM Facultad ORDER BY nombre ASC'),
     pool.query(
       `SELECT codigo, linea FROM Ocde WHERE parent_id IS NULL ORDER BY codigo ASC`,
@@ -65,7 +70,39 @@ export async function handleListSets() {
     });
   }
 
-  // ── Sets por facultad ──
+  // ── Sets de personas ──
+  sets.push({
+    setSpec: 'persona',
+    setName: 'Personas (Investigadores)',
+    setDescription: 'Investigadores y personal academico de la UNMSM',
+  });
+  for (const row of personaSets) {
+    sets.push({
+      setSpec: `persona:facultad-${row.facultad_id}`,
+      setName: `Personas - ${row.facultad_nombre}`,
+    });
+  }
+
+  // ── Sets de unidades organizativas ──
+  sets.push({
+    setSpec: 'orgunit',
+    setName: 'Unidades Organizativas',
+    setDescription: 'Facultades, institutos y grupos de investigacion de la UNMSM',
+  });
+  sets.push({
+    setSpec: 'orgunit:facultad',
+    setName: 'Unidades Organizativas - Facultades',
+  });
+  sets.push({
+    setSpec: 'orgunit:instituto',
+    setName: 'Unidades Organizativas - Institutos',
+  });
+  sets.push({
+    setSpec: 'orgunit:grupo',
+    setName: 'Unidades Organizativas - Grupos de Investigacion',
+  });
+
+  // ── Sets por facultad (cross-entity) ──
   for (const fac of facultades[0]) {
     sets.push({
       setSpec: `facultad:${fac.id}`,
@@ -73,7 +110,7 @@ export async function handleListSets() {
     });
   }
 
-  // ── Sets por area OCDE ──
+  // ── Sets por area OCDE (cross-entity) ──
   for (const ocde of ocdeAreas[0]) {
     sets.push({
       setSpec: `ocde:${ocde.codigo}`,

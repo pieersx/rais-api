@@ -2,15 +2,20 @@
  * Utilidades para generar y parsear identificadores OAI-PMH.
  *
  * Formato: oai:<dominio>:<tipo>/<id>
- * Ejemplo: oai:rais.unmsm.edu.pe:publicacion/42
+ * Ejemplos:
+ *   oai:rais.unmsm.edu.pe:publicacion/42
+ *   oai:rais.unmsm.edu.pe:persona/1234
+ *   oai:rais.unmsm.edu.pe:orgunit/facultad-3
+ *   oai:rais.unmsm.edu.pe:orgunit/instituto-5
+ *   oai:rais.unmsm.edu.pe:orgunit/grupo-10
  */
 
 const OAI_DOMAIN = 'rais.unmsm.edu.pe';
 
 /**
- * Genera un OAI identifier a partir de un tipo y un id numerico.
- * @param {'publicacion'|'proyecto'|'patente'} type
- * @param {number|string} id
+ * Genera un OAI identifier a partir de un tipo y un id.
+ * @param {'publicacion'|'proyecto'|'patente'|'persona'|'orgunit'} type
+ * @param {number|string} id - Numerico para la mayoria, compuesto para orgunit (e.g. "facultad-3")
  * @returns {string} e.g. "oai:rais.unmsm.edu.pe:publicacion/42"
  */
 export function buildOaiIdentifier(type, id) {
@@ -18,21 +23,50 @@ export function buildOaiIdentifier(type, id) {
 }
 
 /**
+ * Construye un OAI identifier compuesto para unidades organizativas.
+ * @param {'facultad'|'instituto'|'grupo'} subtype
+ * @param {number} id
+ * @returns {string} e.g. "oai:rais.unmsm.edu.pe:orgunit/facultad-3"
+ */
+export function buildOrgUnitIdentifier(subtype, id) {
+  return `oai:${OAI_DOMAIN}:orgunit/${subtype}-${id}`;
+}
+
+/**
  * Parsea un OAI identifier y devuelve el tipo y el id.
+ * Soporta IDs simples (numericos) y compuestos (orgunit/facultad-3).
  * @param {string} identifier - e.g. "oai:rais.unmsm.edu.pe:publicacion/42"
- * @returns {{ type: string, id: number } | null}
+ * @returns {{ type: string, id: number|string, subtype?: string, numericId?: number } | null}
  */
 export function parseOaiIdentifier(identifier) {
   if (!identifier || typeof identifier !== 'string') return null;
 
-  const regex = /^oai:rais\.unmsm\.edu\.pe:(\w+)\/(\d+)$/;
+  const regex = /^oai:rais\.unmsm\.edu\.pe:(\w+)\/([\w-]+)$/;
   const match = identifier.match(regex);
 
   if (!match) return null;
 
+  const type = match[1];
+  const rawId = match[2];
+
+  // ID compuesto para orgunit: "facultad-3", "instituto-5", "grupo-10"
+  if (type === 'orgunit') {
+    const compoundMatch = rawId.match(/^(facultad|instituto|grupo)-(\d+)$/);
+    if (!compoundMatch) return null;
+    return {
+      type: 'orgunit',
+      id: rawId,
+      subtype: compoundMatch[1],
+      numericId: Number(compoundMatch[2]),
+    };
+  }
+
+  // ID numerico simple para el resto de entidades
+  if (!/^\d+$/.test(rawId)) return null;
+
   return {
-    type: match[1],
-    id: Number(match[2]),
+    type,
+    id: Number(rawId),
   };
 }
 

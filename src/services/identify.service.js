@@ -1,26 +1,34 @@
 import * as pubRepo from '../repositories/publicacion.repository.js';
 import * as proyRepo from '../repositories/proyecto.repository.js';
 import * as patRepo from '../repositories/patente.repository.js';
+import * as personaRepo from '../repositories/persona.repository.js';
+import * as orgunitRepo from '../repositories/orgunit.repository.js';
 import { toDatestamp } from '../utils/oaiIdentifier.js';
 
 /**
  * Servicio para el verbo Identify.
- * Retorna informacion descriptiva del repositorio con las 3 entidades.
+ * Retorna informacion descriptiva del repositorio con las 5 entidades.
  */
 export async function handleIdentify() {
   // Obtener fechas mas antiguas y conteos en paralelo
-  const [pubEarliest, proyEarliest, patEarliest, pubCount, proyCount, patCount] =
-    await Promise.all([
-      pubRepo.getEarliestDatestamp(),
-      proyRepo.getEarliestDatestamp(),
-      patRepo.getEarliestDatestamp(),
-      pubRepo.countAll(),
-      proyRepo.countAll(),
-      patRepo.countAll(),
-    ]);
+  const [
+    pubEarliest, proyEarliest, patEarliest, personaEarliest, orgunitEarliest,
+    pubCount, proyCount, patCount, personaCount, orgunitCount,
+  ] = await Promise.all([
+    pubRepo.getEarliestDatestamp(),
+    proyRepo.getEarliestDatestamp(),
+    patRepo.getEarliestDatestamp(),
+    personaRepo.getEarliestDatestamp(),
+    orgunitRepo.getEarliestDatestamp(),
+    pubRepo.countAll(),
+    proyRepo.countAll(),
+    patRepo.countAll(),
+    personaRepo.countAll(),
+    orgunitRepo.countAll(),
+  ]);
 
-  // La fecha mas antigua de las 3 entidades
-  const dates = [pubEarliest, proyEarliest, patEarliest]
+  // La fecha mas antigua de las 5 entidades
+  const dates = [pubEarliest, proyEarliest, patEarliest, personaEarliest, orgunitEarliest]
     .filter(Boolean)
     .filter((d) => !d.startsWith?.('0000'))
     .map((d) => new Date(typeof d === 'string' ? d.replace(' ', 'T') + 'Z' : d))
@@ -39,6 +47,7 @@ export async function handleIdentify() {
     earliestDatestamp: earliest,
     deletedRecord: 'no',
     granularity: 'YYYY-MM-DDThh:mm:ssZ',
+    metadataPrefix: 'oai_cerif',
     description: {
       oaiIdentifier: {
         scheme: 'oai',
@@ -62,7 +71,28 @@ export async function handleIdentify() {
           count: patCount,
           description: 'Patentes y registros de propiedad intelectual',
         },
+        {
+          type: 'persona',
+          count: personaCount,
+          description: 'Investigadores y personal academico de la UNMSM',
+        },
+        {
+          type: 'orgunit',
+          count: orgunitCount,
+          description: 'Unidades organizativas: facultades, institutos y grupos de investigacion',
+        },
       ],
+      institution: {
+        name: 'Universidad Nacional Mayor de San Marcos',
+        ror: 'https://ror.org/00rwzpz13',
+        ruc: '20148092282',
+        country: 'PE',
+      },
+      compliance: {
+        profile: 'PeruCRIS 1.1',
+        metadataFormat: 'oai_cerif',
+        schema: 'https://raw.githubusercontent.com/concytec-pe/Peru-CRIS/main/directrices/schemas/perucris-cerif-profile.xsd',
+      },
     },
   };
 }

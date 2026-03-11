@@ -1,481 +1,592 @@
-###############################################################################
-#
-# RAIS-API: OAI-PMH 2.0 JSON API - Ejemplos de Uso Completo
-#
-# Base URL: https://rais.unmsm.edu.pe/api/oai
-# O localmente: http://localhost:3000/api/oai
-#
-# Este archivo contiene ejemplos de todas las operaciones disponibles.
-# Usa la extension REST Client (REST Client, Thunder Client, etc.)
-#
-###############################################################################
+### RAIS-API: OAI-PMH 2.0 Endpoints (api.http)
+### Base URL: http://localhost:3000/api/oai
+### Protocolo: OAI-PMH 2.0 (JSON)
 
-###############################################################################
-# VERBO 1: IDENTIFY
-# Retorna informacion general del repositorio
-###############################################################################
+### ============================================================
+### VERB 1: IDENTIFY
+### Retorna información general del repositorio
+### ============================================================
 
-### 1.1 - Identificar el repositorio
-GET http://localhost:3000/api/oai?verb=Identify
+@baseUrl = http://localhost:3000/api/oai
 
-###############################################################################
-# VERBO 2: LIST METADATA FORMATS
-# Retorna los formatos de metadatos soportados
-###############################################################################
+### Identify - Información general del repositorio
+GET {{baseUrl}}?verb=Identify
 
-### 2.1 - Listar formatos disponibles
-GET http://localhost:3000/api/oai?verb=ListMetadataFormats
 
-### 2.2 - Listar formatos para un registro especifico
-GET http://localhost:3000/api/oai?verb=ListMetadataFormats&identifier=oai:rais.unmsm.edu.pe:publicacion/34
+### ============================================================
+### VERB 2: LIST METADATA FORMATS
+### Retorna los formatos de metadatos soportados
+### ============================================================
 
-###############################################################################
-# VERBO 3: LIST SETS
-# Retorna las categorias (sets) disponibles
-###############################################################################
+### ListMetadataFormats - Todos los formatos disponibles
+GET {{baseUrl}}?verb=ListMetadataFormats
 
-### 3.1 - Listar todos los sets (62 en total)
-GET http://localhost:3000/api/oai?verb=ListSets
+### ListMetadataFormats - Formatos para una publicación específica
+GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:rais.unmsm.edu.pe:publicacion/34
 
-###############################################################################
-# VERBO 4: LIST IDENTIFIERS
-# Retorna solo IDs, fechas y categorias (sin metadata completa)
-# IDEAL para descubrir que registros existen
-###############################################################################
+### ListMetadataFormats - Formatos para un proyecto específico
+GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:rais.unmsm.edu.pe:proyecto/1
 
-### 4.1 - PAGINA 1: Todos los identificadores (primeros 100)
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc
+### ListMetadataFormats - Formatos para una patente específica
+GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:rais.unmsm.edu.pe:patente/5
 
-### 4.2 - PAGINA 2: Siguientes 100 identificadores (usa token de 4.1)
-# Ejecuta 4.1 primero, copia el resumptionToken y sustituye aqui
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&resumptionToken=eyJjdXJzb3IiOjEwMCwic2V0IjpudWxsLCJmcm9tIjpudWxsLCJ1bnRpbCI6bnVsbCwibWV0YWRhdGFQcmVmaXgiOiJvYWlfZGMifQ
+### ListMetadataFormats - Formatos para una persona específica
+GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:rais.unmsm.edu.pe:persona/100
 
-###############################################################################
-# PUBLICACIONES - Todos los tipos
-###############################################################################
+### ListMetadataFormats - Formatos para una facultad específica
+GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:rais.unmsm.edu.pe:orgunit/facultad/1
 
-### 4.3 - PAGINA 1: Todas las publicaciones (primeros 100 de 59,543)
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=publicacion
 
-### 4.4 - Articulos: PAGINA 1 (primeros 100 de 26,636)
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=publicacion:articulo
+### ============================================================
+### VERB 3: LIST SETS
+### Retorna la estructura jerárquica de sets disponibles
+### ============================================================
 
-### 4.5 - Capitulos de libro: PAGINA 1 (primeros 100)
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=publicacion:capitulo
+### ListSets - Todos los sets disponibles (sin parámetros)
+GET {{baseUrl}}?verb=ListSets
 
-### 4.6 - Ensayos: PAGINA 1 (primeros 100)
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=publicacion:ensayo
 
-### 4.7 - Eventos/Ponencias: PAGINA 1 (primeros 100)
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=publicacion:evento
+### ============================================================
+### VERB 4: LIST IDENTIFIERS
+### Retorna solo encabezados sin metadatos completos
+### ============================================================
 
-### 4.8 - Libros: PAGINA 1 (primeros 100)
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=publicacion:libro
+### ---- PUBLICACIONES (59,543) ----
 
-### 4.9 - Tesis: PAGINA 1 (primeros 100)
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=publicacion:tesis
+### ListIdentifiers - Todas las publicaciones
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion
 
-### 4.10 - Tesis (asesorias): PAGINA 1 (primeros 100)
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=publicacion:tesis-asesoria
+### ListIdentifiers - Artículos solamente
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:articulo
 
-###############################################################################
-# PUBLICACIONES - Filtrado por fechas
-###############################################################################
+### ListIdentifiers - Artículos del 2024
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:articulo&from=2024-01-01&until=2024-12-31
 
-### 4.11 - Articulos del 2024: PAGINA 1 (primeros 100 de ~1,530)
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=publicacion:articulo&from=2024-01-01&until=2024-12-31
+### ListIdentifiers - Libros
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:libro
 
-### 4.12 - Publicaciones del 2023: PAGINA 1 (primeros 100)
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=publicacion&from=2023-01-01&until=2023-12-31
+### ListIdentifiers - Capítulos de libro
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:capitulo
 
-### 4.13 - Publicaciones desde 2020 en adelante: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=publicacion&from=2020-01-01
+### ListIdentifiers - Tesis
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:tesis
 
-### 4.14 - Publicaciones hasta 2015: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=publicacion&until=2015-12-31
+### ListIdentifiers - Tesis de asesoría
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:tesis-asesoria
 
-###############################################################################
-# PROYECTOS - Todos los tipos
-###############################################################################
+### ListIdentifiers - Ensayos
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:ensayo
 
-### 4.15 - Todos los proyectos: PAGINA 1 (primeros 100 de 6,690)
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=proyecto
+### ListIdentifiers - Ponencias y eventos
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:evento
 
-### 4.16 - Proyectos CON FINANCIAMIENTO: PAGINA 1 (primeros 100 de 2,868)
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=proyecto:PCONFIGI
+### ListIdentifiers - Publicaciones desde enero 2023
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion&from=2023-01-01
 
-### 4.17 - Proyectos SIN FINANCIAMIENTO (Investigacion): PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=proyecto:PSINFINV
+### ---- PROYECTOS (6,690) ----
 
-### 4.18 - Proyectos SIN FINANCIAMIENTO (Publicacion): PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=proyecto:PSINFIPU
+### ListIdentifiers - Todos los proyectos
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto
 
-### 4.19 - Tesis PREGRADO: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=proyecto:PTPGRADO
+### ListIdentifiers - Proyectos con financiamiento (PCONFIGI)
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PCONFIGI
 
-### 4.20 - Tesis MAESTRIA: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=proyecto:PTPMAEST
+### ListIdentifiers - Proyectos sin financiamiento (Investigación)
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PSINFINV
 
-### 4.21 - Tesis DOCTORADO: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=proyecto:PTPDOCTO
+### ListIdentifiers - Proyectos sin financiamiento (Publicación)
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PSINFIPU
 
-### 4.22 - Eventos Academicos: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=proyecto:PEVENTO
+### ListIdentifiers - Tesis Pregrado
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PTPGRADO
 
-###############################################################################
-# PATENTES - Todos los tipos
-###############################################################################
+### ListIdentifiers - Tesis Maestría
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PTPMAEST
 
-### 4.23 - Todas las patentes: PAGINA 1 (primeros 100 de 406)
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=patente
+### ListIdentifiers - Tesis Doctorado
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PTPDOCTO
 
-### 4.24 - Patentes de invencion: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=patente:Patente%20de%20invención
+### ListIdentifiers - Tesis Bachiller
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PTPBACHILLER
 
-### 4.25 - Modelos de utilidad: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=patente:Modelo%20de%20utilidad
+### ListIdentifiers - Eventos Académicos
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PEVENTO
 
-### 4.26 - Registros de software: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=patente:Registro%20de%20software
+### ListIdentifiers - Proyectos Multidisciplinarios
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PMULTI
 
-###############################################################################
-# MULTI-ENTIDAD: FACULTADES (Publicaciones + Proyectos)
-###############################################################################
+### ListIdentifiers - Proyectos Interdisciplinarios
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PINTERDIS
 
-### 4.27 - Facultad de Medicina (4,707 pubs + 776 proyectos = 5,483): PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=facultad:1
+### ---- PATENTES (406) ----
 
-### 4.28 - Facultad de Letras y Ciencias Humanas: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=facultad:3
+### ListIdentifiers - Todas las patentes
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=patente
 
-### 4.29 - Facultad de Ingenieria de Sistemas: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=facultad:20
+### ListIdentifiers - Patentes de invención
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=patente:Patente de invencion
 
-### 4.30 - Facultad de Ciencias Biologicas: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=facultad:10
+### ListIdentifiers - Modelos de utilidad
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=patente:Modelo de utilidad
 
-###############################################################################
-# MULTI-ENTIDAD: AREAS OCDE (Publicaciones + Proyectos)
-###############################################################################
+### ListIdentifiers - Registros de software
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=patente:Registro de software
 
-### 4.31 - OCDE 1: Ciencias Naturales (1,021 pubs + 1,452 proyectos = 2,473): PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=ocde:1
+### ListIdentifiers - Certificados de obtentor
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=patente:Certificado de obtentor
 
-### 4.32 - OCDE 2: Ingenieria y Tecnologia: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=ocde:2
+### ---- PERSONAS (36,455) ----
 
-### 4.33 - OCDE 3: Ciencias Medicas y de Salud: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=ocde:3
+### ListIdentifiers - Todos los investigadores
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=persona
 
-### 4.34 - OCDE 5: Ciencias Sociales: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=ocde:5
+### ---- UNIDADES ORGANIZATIVAS (492) ----
 
-###############################################################################
-# VERBO 5: LIST RECORDS
-# Retorna records COMPLETOS con metadatos Dublin Core
-# IDEAL para obtener todos los datos: titulo, autores, ORCID, revista, etc.
-###############################################################################
+### ListIdentifiers - Todas las unidades organizativas
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=orgunit
 
-### 5.1 - PAGINA 1: Todos los records (primeros 100 de 59,543)
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc
+### ---- POR FACULTAD (multi-entidad: publicaciones + proyectos) ----
 
-### 5.2 - PAGINA 2: Siguientes 100 records
-# Copia el token de resumptionToken de 5.1
-GET http://localhost:3000/api/oai?verb=ListRecords&resumptionToken=eyJjdXJzb3IiOjEwMCwic2V0IjpudWxsLCJmcm9tIjpudWxsLCJ1bnRpbCI6bnVsbCwibWV0YWRhdGFQcmVmaXgiOiJvYWlfZGMifQ
+### ListIdentifiers - Facultad de Medicina
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:1
 
-###############################################################################
-# PUBLICACIONES CON METADATOS COMPLETOS
-###############################################################################
+### ListIdentifiers - Facultad de Derecho
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:2
 
-### 5.3 - Todos los articulos: PAGINA 1 (primeros 100 de 26,636)
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=publicacion:articulo
+### ListIdentifiers - Facultad de Letras y Ciencias Humanas
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:3
 
-### 5.4 - Articulos 2024: PAGINA 1 (primeros 100 de ~1,530)
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=publicacion:articulo&from=2024-01-01&until=2024-12-31
+### ListIdentifiers - Facultad de Farmacia y Bioquímica
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:4
 
-### 5.5 - Libros: PAGINA 1 (primeros 100)
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=publicacion:libro
+### ListIdentifiers - Facultad de Odontología
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:5
 
-### 5.6 - Tesis: PAGINA 1 (primeros 100)
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=publicacion:tesis
+### ListIdentifiers - Facultad de Educación
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:6
 
-###############################################################################
-# PROYECTOS CON METADATOS COMPLETOS
-###############################################################################
+### ListIdentifiers - Facultad de Química e Ingeniería Química
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:7
 
-### 5.7 - Todos los proyectos: PAGINA 1 (primeros 100 de 6,690)
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=proyecto
+### ListIdentifiers - Facultad de Medicina Veterinaria
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:8
 
-### 5.8 - Proyectos con financiamiento: PAGINA 1 (primeros 100 de 2,868)
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=proyecto:PCONFIGI
+### ListIdentifiers - Facultad de Ciencias Administrativas
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:9
 
-### 5.9 - Tesis pregrado: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=proyecto:PTPGRADO
+### ListIdentifiers - Facultad de Ciencias Biológicas
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:10
 
-### 5.10 - Tesis doctorado: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=proyecto:PTPDOCTO
+### ListIdentifiers - Facultad de Ciencias Contables
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:11
 
-### 5.11 - Proyectos 2023: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=proyecto&from=2023-01-01&until=2023-12-31
+### ListIdentifiers - Facultad de Ciencias Económicas
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:12
 
-###############################################################################
-# PATENTES CON METADATOS COMPLETOS
-###############################################################################
+### ListIdentifiers - Facultad de Ciencias Físicas
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:13
 
-### 5.12 - Todas las patentes: PAGINA 1 (primeros 100 de 406)
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=patente
+### ListIdentifiers - Facultad de Ciencias Matemáticas
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:14
 
-### 5.13 - Patentes de invencion: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=patente:Patente%20de%20invención
+### ListIdentifiers - Facultad de Ciencias Sociales
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:15
 
-### 5.14 - Registros de software: PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=patente:Registro%20de%20software
+### ListIdentifiers - Facultad de Ingeniería Geológica, Minera, Metalúrgica y Geográfica
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:16
 
-###############################################################################
-# MULTI-ENTIDAD: FACULTADES CON METADATA COMPLETA
-###############################################################################
+### ListIdentifiers - Facultad de Ingeniería Industrial
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:17
 
-### 5.15 - Facultad de Medicina (pubs + proyectos): PAGINA 1 (primeros 100 de 5,483)
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=facultad:1
+### ListIdentifiers - Facultad de Psicología
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:18
 
-### 5.16 - Facultad de Ingenieria de Sistemas (pubs + proyectos): PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=facultad:20
+### ListIdentifiers - Facultad de Ingeniería Electrónica y Eléctrica
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:19
 
-###############################################################################
-# MULTI-ENTIDAD: AREAS OCDE CON METADATA COMPLETA
-###############################################################################
+### ListIdentifiers - Facultad de Ingeniería de Sistemas e Informática
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:20
 
-### 5.17 - OCDE 1: Ciencias Naturales (pubs + proyectos): PAGINA 1 (primeros 100 de 2,473)
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=ocde:1
+### ---- POR ÁREA OCDE (multi-entidad: publicaciones + proyectos) ----
 
-### 5.18 - OCDE 3: Ciencias Medicas (pubs + proyectos): PAGINA 1
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=ocde:3
+### ListIdentifiers - Área OCDE: Ciencias Naturales
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=ocde:1
 
-###############################################################################
-# VERBO 6: GET RECORD
-# Obtiene UN registro especifico por su identificador OAI
-# IDEAL para obtener detalles completos de un record conocido
-###############################################################################
-
-### 6.1 - Obtener una PUBLICACION especifica (ID: 34)
-# Incluye: titulo, autores con ORCID, palabras clave, revista con editorial, 
-# bases indexadas, proyectos vinculados, etc.
-GET http://localhost:3000/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/34&metadataPrefix=oai_dc
-
-### 6.2 - Obtener otro registro de publicacion (ID: 2)
-GET http://localhost:3000/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/2&metadataPrefix=oai_dc
-
-### 6.3 - Obtener un PROYECTO especifico (ID: 1)
-# Incluye: titulo, responsables con ORCID, integrantes, facultad, area OCDE, etc.
-GET http://localhost:3000/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:proyecto/1&metadataPrefix=oai_dc
-
-### 6.4 - Obtener una PATENTE especifica (ID: 5)
-# Incluye: titulo, inventores con ORCID, oficina presentacion, entidades, etc.
-GET http://localhost:3000/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:patente/5&metadataPrefix=oai_dc
-
-###############################################################################
-# MANEJO DE PAGINACION - TUTORIAL PASO A PASO
-###############################################################################
-
-### PASO 1: Ejecuta esta URL para obtener PAGINA 1
-# Verás una respuesta con 100 records y un campo "resumptionToken"
-# En la respuesta JSON, busca: "resumptionToken": { "token": "eyJ...", ...}
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=publicacion:articulo
-
-### PASO 2: Copia el valor COMPLETO de "token" (cadena larga que empieza con eyJ)
-# Ejemplo del valor que debes copiar:
-# eyJjdXJzb3IiOjEwMCwic2V0IjoicHVibGljYWNpb246YXJ0aWN1bG8iLCJmcm9tIjpudWxsLCJ1bnRpbCI6bnVsbCwibWV0YWRhdGFQcmVmaXgiOiJvYWlfZGMifQ
-
-### PASO 3: Sustituye el token en la siguiente URL para obtener PAGINA 2
-# Cambia resumptionToken=AQUI_PEGA_EL_TOKEN_QUE_COPIASTE
-GET http://localhost:3000/api/oai?verb=ListRecords&resumptionToken=eyJjdXJzb3IiOjEwMCwic2V0IjoicHVibGljYWNpb246YXJ0aWN1bG8iLCJmcm9tIjpudWxsLCJ1bnRpbCI6bnVsbCwibWV0YWRhdGFQcmVmaXgiOiJvYWlfZGMifQ
-
-### PASO 4: Repite PASO 2 y PASO 3 para las siguientes paginas
-# Cada vez que ejecutes una URL, obtendrás un nuevo token para la proxima pagina
-
-### PASO 5: Cuando veas resumptionToken.token = "" (cadena vacia)
-# Significa que llegaste a la ULTIMA PAGINA - no hay mas registros
-
-###############################################################################
-# CAMBIAR TAMAÑO DE PAGINACION
-###############################################################################
-
-# El tamaño predeterminado es 100 registros por pagina.
-# Para cambiar esto, edita el archivo .env:
-#
-# PAGE_SIZE=50     -> 50 registros por pagina (mas paginas, menos datos c/u)
-# PAGE_SIZE=200    -> 200 registros por pagina (menos paginas, mas datos c/u)
-# PAGE_SIZE=1000   -> 1000 registros por pagina (minimo numero de paginas)
-#
-# Despues de cambiar .env, reinicia el servidor:
-# npm run dev     (desarrollo)
-# npm start       (produccion)
-
-###############################################################################
-# ATAJOS Y TRUCOS
-###############################################################################
-
-# Para cosechar TODO sin paginar manualmente, usa curl en terminal:
-#
-# curl -s "http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc" \
-#   | jq '.records[] | .header.identifier' \
-#   > ids.txt
-#
-# O usa el script Python de example en API.md
-
-# Para buscar un identificador en los resultados:
-# 1. Ejecuta ListIdentifiers sin filtros
-# 2. Copia los primeros IDs que ves
-# 3. Usa GetRecord para obtener detalles de uno especifico
-
-###############################################################################
-# ESTRUCTURA DE RESPUESTA JSON
-###############################################################################
-
-# Cuando ejecutes cualquier URL, obtendrás JSON con esta estructura:
-#
-# RESPUESTA EXITOSA (sin errores):
-# {
-#   "responseDate": "2026-03-07T06:00:00.000Z",
-#   "request": {
-#     "baseURL": "http://localhost:3000/api/oai",
-#     "verb": "ListRecords",
-#     "metadataPrefix": "oai_dc",
-#     "set": "publicacion:articulo"
-#   },
-#   "verb": "ListRecords",
-#   "records": [
-#     {
-#       "header": {
-#         "identifier": "oai:rais.unmsm.edu.pe:publicacion/34",
-#         "datestamp": "2023-05-15T10:30:00Z",
-#         "setSpec": ["publicacion:articulo"]
-#       },
-#       "metadata": {
-#         "dc:title": "Titulo del articulo",
-#         "dc:creator": [{"name": "AUTOR, JUAN", "orcid": "0000-0001-2345-6789"}],
-#         "dc:source": "Revista, Editorial: ..., ISSN: ...",
-#         ...
-#       }
-#     }
-#     ... (99 records mas)
-#   ],
-#   "resumptionToken": {
-#     "token": "eyJjdXJzb3IiOjEwMCwi...",
-#     "completeListSize": 26636,
-#     "cursor": 0
-#   }
-# }
-#
-# RESPUESTA CON ERROR:
-# {
-#   "responseDate": "2026-03-07T06:00:00.000Z",
-#   "request": {...},
-#   "error": {
-#     "code": "badVerb",
-#     "message": "Illegal OAI verb..."
-#   }
-# }
-
-###############################################################################
-# CODIGOS DE ERROR Y COMO EVITARLOS
-###############################################################################
-
-### badVerb: Verbo invalido o faltante
-# INCORRECTO (typo en verbo):
-GET http://localhost:3000/api/oai?verb=ListRecordss
-
-# CORRECTO:
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc
-
-###############################################################################
-
-### badArgument: Parametro invalido, faltante o no reconocido
-# INCORRECTO (ListRecords sin metadataPrefix):
-GET http://localhost:3000/api/oai?verb=ListRecords
-
-# CORRECTO:
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc
-
-###############################################################################
-
-### badArgument: Parametro extra no permitido
-# INCORRECTO (parametro "extra" no existe en OAI-PMH):
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&extra=valor
-
-# CORRECTO:
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc
-
-###############################################################################
-
-### idDoesNotExist: Identificador no encontrado
-# INCORRECTO (ID que no existe):
-GET http://localhost:3000/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/999999999&metadataPrefix=oai_dc
-
-# CORRECTO (IDs reales):
-GET http://localhost:3000/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/34&metadataPrefix=oai_dc
-
-###############################################################################
-
-### noRecordsMatch: Sin resultados para los filtros
-# INCORRECTO (fecha futura sin registros):
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&from=2099-01-01
-
-# CORRECTO (fecha con datos):
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&from=2024-01-01
-
-###############################################################################
-
-### badResumptionToken: Token invalido o manipulado
-# INCORRECTO (token falso):
-GET http://localhost:3000/api/oai?verb=ListRecords&resumptionToken=tokeninvalido
-
-# CORRECTO (token valido de una respuesta anterior):
-GET http://localhost:3000/api/oai?verb=ListRecords&resumptionToken=eyJjdXJzb3IiOjEwMCwic2V0IjoicHVibGljYWNpb246YXJ0aWN1bG8iLCJmcm9tIjpudWxsLCJ1bnRpbCI6bnVsbCwibWV0YWRhdGFQcmVmaXgiOiJvYWlfZGMifQ
-
-###############################################################################
-
-### cannotDisseminateFormat: Formato de metadatos no soportado
-# INCORRECTO (formato no soportado):
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=marc21
-
-# CORRECTO (solo oai_dc soportado):
-GET http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc
-
-###############################################################################
-# NOTAS IMPORTANTES
-###############################################################################
-
-# 1. CAMBIAR BASE URL:
-#    - Desarrollo: http://localhost:3000/api/oai
-#    - Produccion: https://rais.unmsm.edu.pe/api/oai
-
-# 2. PARAMETROS CON ESPACIOS:
-#    Usa %20 en lugar de espacios en la URL
-#    Ejemplo: patente:Patente%20de%20invención
-
-# 3. FORMATO DE FECHAS:
-#    Usa formato ISO 8601: YYYY-MM-DD
-#    Ejemplo: from=2024-01-01&until=2024-12-31
-
-# 4. EXTENSIONES REST CLIENT RECOMENDADAS:
-#    - REST Client (VS Code) - la mas recomendada
-#    - Thunder Client (VS Code)
-#    - Insomnia (multiplataforma)
-#    - Postman (multiplataforma)
-
-# 5. USAR CON cURL (Terminal/Bash):
-#    curl "http://localhost:3000/api/oai?verb=Identify"
-#    curl "http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=publicacion:articulo"
-
-# 6. USAR CON Python (requests):
-#    import requests
-#    r = requests.get("http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc")
-#    print(r.json())
-
-# 7. USAR CON Node.js (fetch):
-#    const r = await fetch("http://localhost:3000/api/oai?verb=ListRecords&metadataPrefix=oai_dc");
-#    const data = await r.json();
-#    console.log(data);
-
-###############################################################################
+### ListIdentifiers - Área OCDE: Ingeniería y Tecnología
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=ocde:2
+
+### ListIdentifiers - Área OCDE: Ciencias Médicas y de Salud
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=ocde:3
+
+### ListIdentifiers - Área OCDE: Ciencias Agrícolas
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=ocde:4
+
+### ListIdentifiers - Área OCDE: Ciencias Sociales
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=ocde:5
+
+### ListIdentifiers - Área OCDE: Humanidades
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=ocde:6
+
+### ---- PAGINACIÓN CON RESUMPTION TOKEN ----
+
+### ListIdentifiers - Obtener siguiente página usando resumptionToken
+### Reemplazar 'eyJjdXJzb3IiOjEwMCwi...' con el token de la respuesta anterior
+GET {{baseUrl}}?verb=ListIdentifiers&resumptionToken=eyJjdXJzb3IiOjEwMCwi
+
+
+### ============================================================
+### VERB 5: LIST RECORDS
+### Retorna registros completos con metadatos CERIF JSON
+### ============================================================
+
+### ---- PUBLICACIONES (59,543) ----
+
+### ListRecords - Todas las publicaciones
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion
+
+### ListRecords - Artículos solamente
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:articulo
+
+### ListRecords - Artículos del 2024
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:articulo&from=2024-01-01&until=2024-12-31
+
+### ListRecords - Artículos del 2023
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:articulo&from=2023-01-01&until=2023-12-31
+
+### ListRecords - Libros
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:libro
+
+### ListRecords - Capítulos de libro
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:capitulo
+
+### ListRecords - Tesis
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:tesis
+
+### ListRecords - Ensayos
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:ensayo
+
+### ListRecords - Ponencias y eventos
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:evento
+
+### ListRecords - Publicaciones desde 2020
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion&from=2020-01-01
+
+### ListRecords - Publicaciones entre 2022-2024
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion&from=2022-01-01&until=2024-12-31
+
+### ---- PROYECTOS (6,690) ----
+
+### ListRecords - Todos los proyectos
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto
+
+### ListRecords - Proyectos con financiamiento (PCONFIGI)
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PCONFIGI
+
+### ListRecords - Proyectos sin financiamiento (Investigación)
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PSINFINV
+
+### ListRecords - Proyectos sin financiamiento (Publicación)
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PSINFIPU
+
+### ListRecords - Tesis Pregrado
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PTPGRADO
+
+### ListRecords - Tesis Maestría
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PTPMAEST
+
+### ListRecords - Tesis Doctorado
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PTPDOCTO
+
+### ListRecords - Tesis Bachiller
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PTPBACHILLER
+
+### ListRecords - Eventos Académicos
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PEVENTO
+
+### ListRecords - Proyectos Multidisciplinarios
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PMULTI
+
+### ListRecords - Proyectos Interdisciplinarios
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PINTERDIS
+
+### ListRecords - Spin-Off
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:SPINOFF
+
+### ---- PATENTES (406) ----
+
+### ListRecords - Todas las patentes
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=patente
+
+### ListRecords - Patentes de invención
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=patente:Patente de invencion
+
+### ListRecords - Modelos de utilidad
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=patente:Modelo de utilidad
+
+### ListRecords - Registros de software
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=patente:Registro de software
+
+### ListRecords - Certificados de obtentor
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=patente:Certificado de obtentor
+
+### ListRecords - Otros registros
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=patente:Otros
+
+### ---- PERSONAS (36,455) ----
+
+### ListRecords - Todos los investigadores
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=persona
+
+### ---- UNIDADES ORGANIZATIVAS (492) ----
+
+### ListRecords - Todas las unidades organizativas
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=orgunit
+
+### ---- POR FACULTAD (multi-entidad: publicaciones + proyectos) ----
+
+### ListRecords - Facultad de Medicina (publicaciones + proyectos)
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:1
+
+### ListRecords - Facultad de Medicina desde 2023
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:1&from=2023-01-01
+
+### ListRecords - Facultad de Derecho
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:2
+
+### ListRecords - Facultad de Letras y Ciencias Humanas
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:3
+
+### ListRecords - Facultad de Farmacia y Bioquímica
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:4
+
+### ListRecords - Facultad de Odontología
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:5
+
+### ListRecords - Facultad de Educación
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:6
+
+### ListRecords - Facultad de Química e Ingeniería Química
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:7
+
+### ListRecords - Facultad de Medicina Veterinaria
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:8
+
+### ListRecords - Facultad de Ciencias Administrativas
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:9
+
+### ListRecords - Facultad de Ciencias Biológicas
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:10
+
+### ListRecords - Facultad de Ciencias Contables
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:11
+
+### ListRecords - Facultad de Ciencias Económicas
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:12
+
+### ListRecords - Facultad de Ciencias Físicas
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:13
+
+### ListRecords - Facultad de Ciencias Matemáticas
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:14
+
+### ListRecords - Facultad de Ciencias Sociales
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:15
+
+### ListRecords - Facultad de Ingeniería Geológica, Minera, Metalúrgica y Geográfica
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:16
+
+### ListRecords - Facultad de Ingeniería Industrial
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:17
+
+### ListRecords - Facultad de Psicología
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:18
+
+### ListRecords - Facultad de Ingeniería Electrónica y Eléctrica
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:19
+
+### ListRecords - Facultad de Ingeniería de Sistemas e Informática
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:20
+
+### ---- POR ÁREA OCDE (multi-entidad: publicaciones + proyectos) ----
+
+### ListRecords - Área OCDE: Ciencias Naturales
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:1
+
+### ListRecords - Área OCDE: Ingeniería y Tecnología
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:2
+
+### ListRecords - Área OCDE: Ciencias Médicas y de Salud
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:3
+
+### ListRecords - Área OCDE: Ciencias Médicas desde 2023
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:3&from=2023-01-01
+
+### ListRecords - Área OCDE: Ciencias Agrícolas
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:4
+
+### ListRecords - Área OCDE: Ciencias Sociales
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:5
+
+### ListRecords - Área OCDE: Humanidades
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:6
+
+### ---- PAGINACIÓN CON RESUMPTION TOKEN ----
+
+### ListRecords - Obtener siguiente página
+### Reemplazar 'eyJjdXJzb3IiOjEwMCwi...' con el token de la respuesta anterior
+GET {{baseUrl}}?verb=ListRecords&resumptionToken=eyJjdXJzb3IiOjEwMCwi
+
+
+### ============================================================
+### VERB 6: GET RECORD
+### Retorna un registro individual específico
+### ============================================================
+
+### ---- PUBLICACIONES ----
+
+### GetRecord - Publicación específica (#34)
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/34&metadataPrefix=oai_cerif
+
+### GetRecord - Publicación #2
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/2&metadataPrefix=oai_cerif
+
+### GetRecord - Publicación #100
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/100&metadataPrefix=oai_cerif
+
+### ---- PROYECTOS ----
+
+### GetRecord - Proyecto específico (#1)
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:proyecto/1&metadataPrefix=oai_cerif
+
+### GetRecord - Proyecto #10
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:proyecto/10&metadataPrefix=oai_cerif
+
+### GetRecord - Proyecto #100
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:proyecto/100&metadataPrefix=oai_cerif
+
+### ---- PATENTES ----
+
+### GetRecord - Patente específica (#5)
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:patente/5&metadataPrefix=oai_cerif
+
+### GetRecord - Patente #1
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:patente/1&metadataPrefix=oai_cerif
+
+### GetRecord - Patente #50
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:patente/50&metadataPrefix=oai_cerif
+
+### ---- PERSONAS ----
+
+### GetRecord - Persona específica (#100)
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:persona/100&metadataPrefix=oai_cerif
+
+### GetRecord - Persona #1
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:persona/1&metadataPrefix=oai_cerif
+
+### GetRecord - Persona #1000
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:persona/1000&metadataPrefix=oai_cerif
+
+### ---- UNIDADES ORGANIZATIVAS: FACULTADES ----
+
+### GetRecord - Facultad específica (#1 = Facultad de Medicina)
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/facultad/1&metadataPrefix=oai_cerif
+
+### GetRecord - Facultad #2
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/facultad/2&metadataPrefix=oai_cerif
+
+### GetRecord - Facultad #10
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/facultad/10&metadataPrefix=oai_cerif
+
+### GetRecord - Facultad #20
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/facultad/20&metadataPrefix=oai_cerif
+
+### ---- UNIDADES ORGANIZATIVAS: INSTITUTOS ----
+
+### GetRecord - Instituto específico (#102)
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/instituto/102&metadataPrefix=oai_cerif
+
+### GetRecord - Instituto #1
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/instituto/1&metadataPrefix=oai_cerif
+
+### GetRecord - Instituto #50
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/instituto/50&metadataPrefix=oai_cerif
+
+### ---- UNIDADES ORGANIZATIVAS: GRUPOS DE INVESTIGACIÓN ----
+
+### GetRecord - Grupo de Investigación específico (#24)
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/grupo/24&metadataPrefix=oai_cerif
+
+### GetRecord - Grupo #1
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/grupo/1&metadataPrefix=oai_cerif
+
+### GetRecord - Grupo #100
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/grupo/100&metadataPrefix=oai_cerif
+
+
+### ============================================================
+### EJEMPLOS DE ERRORES (Testing)
+### ============================================================
+
+### Error: Verbo inválido
+GET {{baseUrl}}?verb=InvalidVerb
+
+### Error: Parámetro faltante (GetRecord sin identifier)
+GET {{baseUrl}}?verb=GetRecord&metadataPrefix=oai_cerif
+
+### Error: Formato de metadatos no soportado
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=marc21&set=publicacion
+
+### Error: Identificador no encontrado
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/999999999&metadataPrefix=oai_cerif
+
+### Error: Set no encontrado o vacío
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=nonexistent
+
+### Error: Rango de fechas sin resultados
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion&from=1900-01-01&until=1950-12-31
+
+
+### ============================================================
+### NOTAS IMPORTANTES
+### ============================================================
+
+### Verbos OAI-PMH soportados:
+### - Identify         → Información del repositorio
+### - ListMetadataFormats → Formatos soportados
+### - ListSets         → Estructura de sets
+### - ListIdentifiers  → Solo encabezados (sin metadatos)
+### - ListRecords      → Registros completos con metadatos
+### - GetRecord        → Registro individual específico
+
+### Formatos de metadatos:
+### - oai_cerif        → CERIF JSON (PerúCRIS 1.1 compliant)
+
+### Parámetros principales:
+### - verb             → Verbo OAI-PMH (requerido)
+### - metadataPrefix   → Formato (requerido para ListIdentifiers, ListRecords, GetRecord)
+### - set              → Filtro por set/categoría
+### - from             → Fecha de inicio (ISO 8601: YYYY-MM-DD)
+### - until            → Fecha de fin (ISO 8601: YYYY-MM-DD)
+### - identifier       → ID OAI completo (requerido para GetRecord)
+### - resumptionToken  → Token de paginación (excluye otros parámetros)
+
+### Entidades principales:
+### 1. Publicaciones (59,543) - publicacion, publicacion:articulo, publicacion:libro, etc.
+### 2. Proyectos (6,690)     - proyecto, proyecto:PCONFIGI, proyecto:PTPGRADO, etc.
+### 3. Patentes (406)        - patente, patente:Patente de invencion, etc.
+### 4. Personas (36,455)     - persona
+### 5. Unidades Org (492)    - orgunit, facultad:*, instituto, grupo
+
+### Paginación:
+### - Tamaño por página: 100 registros (configurable)
+### - resumptionToken: Token Base64url para obtener siguiente página
+### - Última página: token vacío ("") indica fin de lista
+
+### Formatos de identificadores OAI:
+### - Publicación: oai:rais.unmsm.edu.pe:publicacion/{id}
+### - Proyecto:    oai:rais.unmsm.edu.pe:proyecto/{id}
+### - Patente:     oai:rais.unmsm.edu.pe:patente/{id}
+### - Persona:     oai:rais.unmsm.edu.pe:persona/{id}
+### - Facultad:    oai:rais.unmsm.edu.pe:orgunit/facultad/{id}
+### - Instituto:   oai:rais.unmsm.edu.pe:orgunit/instituto/{id}
+### - Grupo:       oai:rais.unmsm.edu.pe:orgunit/grupo/{id}

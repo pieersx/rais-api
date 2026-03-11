@@ -12,9 +12,9 @@ const oaiRouter = Router();
  *   ?verb=Identify
  *   ?verb=ListMetadataFormats
  *   ?verb=ListSets
- *   ?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/1&metadataPrefix=oai_dc
- *   ?verb=ListIdentifiers&metadataPrefix=oai_dc
- *   ?verb=ListRecords&metadataPrefix=oai_dc
+ *   ?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/1&metadataPrefix=oai_cerif
+ *   ?verb=ListIdentifiers&metadataPrefix=oai_cerif
+ *   ?verb=ListRecords&metadataPrefix=oai_cerif
  */
 oaiRouter.get('/', validateVerb, handleOaiRequest);
 

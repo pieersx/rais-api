@@ -8,7 +8,7 @@ import { resolveEntityType, getRepository, isMultiEntitySet } from './listIdenti
 
 /**
  * Servicio para el verbo ListRecords.
- * Soporta publicaciones, proyectos y patentes segun el set.
+ * Soporta 5 entidades: publicacion, proyecto, patente, persona, orgunit.
  *
  * Para sets multi-entidad (facultad:*, ocde:*), combina registros
  * de publicaciones y proyectos en secuencia.
@@ -24,7 +24,7 @@ export async function handleListRecords(oaiParams) {
     return handleMultiEntityRecords(pagination);
   }
 
-  // Single-entity flow (original behavior)
+  // Single-entity flow
   const { cursor } = pagination;
   const entityType = resolveEntityType(set);
   const repo = getRepository(entityType);
@@ -56,7 +56,6 @@ export async function handleListRecords(oaiParams) {
 async function handleMultiEntityRecords(pagination) {
   const { set, from, until, metadataPrefix, pageSize } = pagination;
 
-  // Decode composite cursor from resumptionToken if present
   let entity = 'publicacion';
   let cursor = 0;
   let pubTotal = null;
@@ -69,7 +68,6 @@ async function handleMultiEntityRecords(pagination) {
     proyTotal = pagination._multiEntity.proyTotal;
   }
 
-  // Get totals (cache in token for subsequent pages)
   if (pubTotal === null || proyTotal === null) {
     [pubTotal, proyTotal] = await Promise.all([
       pubRepo.countAll({ set, from, until }),
@@ -85,7 +83,6 @@ async function handleMultiEntityRecords(pagination) {
   let nextEntity = entity;
   let nextCursor = cursor;
 
-  // Fill from publicaciones
   if (entity === 'publicacion' && remaining > 0 && cursor < pubTotal) {
     const pubs = await pubRepo.findAll({ set, from, until, cursor, limit: remaining });
     for (const record of pubs) {
@@ -103,7 +100,6 @@ async function handleMultiEntityRecords(pagination) {
     }
   }
 
-  // Fill from proyectos
   if ((entity === 'proyecto' || (entity === 'publicacion' && nextEntity === 'proyecto')) && remaining > 0) {
     const proyCursor = entity === 'proyecto' ? cursor : 0;
     const proys = await proyRepo.findAll({ set, from, until, cursor: proyCursor, limit: remaining });
@@ -119,7 +115,6 @@ async function handleMultiEntityRecords(pagination) {
 
   if (formattedRecords.length === 0) throw noRecordsMatch();
 
-  // Build resumption token
   const globalOffset = (nextEntity === 'publicacion' ? nextCursor : pubTotal + nextCursor);
   let resumption = null;
 
@@ -129,7 +124,7 @@ async function handleMultiEntityRecords(pagination) {
       set: set ?? null,
       from: from ?? null,
       until: until ?? null,
-      metadataPrefix: metadataPrefix ?? 'oai_dc',
+      metadataPrefix: metadataPrefix ?? 'oai_cerif',
       _multiEntity: {
         entity: nextEntity,
         cursor: nextCursor,
