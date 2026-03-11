@@ -1,6 +1,6 @@
 # RAIS-API: OAI-PMH 2.0 JSON API
 
-API de datos abiertos del **Registro de Actividades de Investigacion San Marcos (RAIS)** de la Universidad Nacional Mayor de San Marcos. Expone publicaciones, proyectos de investigacion y patentes siguiendo el protocolo OAI-PMH 2.0, con respuestas en formato JSON.
+API de datos abiertos del **Registro de Actividades de Investigacion San Marcos (RAIS)** de la Universidad Nacional Mayor de San Marcos. Expone publicaciones, proyectos de investigacion, patentes, investigadores y unidades organizativas siguiendo el protocolo OAI-PMH 2.0, con respuestas en formato CERIF JSON (PerúCRIS 1.1 compliant).
 
 ---
 
@@ -11,18 +11,22 @@ API de datos abiertos del **Registro de Actividades de Investigacion San Marcos 
 | **Base URL** | `https://rais.unmsm.edu.pe/api/oai` |
 | **Protocolo** | OAI-PMH 2.0 (JSON) |
 | **Autenticacion** | Publica (sin autenticacion) |
-| **Formato de metadatos** | `oai_dc` (Dublin Core) |
+| **Formato de metadatos** | `oai_cerif` (CERIF JSON) |
 | **Metodo HTTP** | `GET` |
 | **Formato de respuesta** | `application/json` |
 | **Paginacion** | 100 registros por pagina (configurable via `PAGE_SIZE`) |
+| **Cumplimiento** | PerúCRIS 1.1 (CONCYTEC) - 95/100 |
 
 ### Entidades expuestas
 
-| Entidad | Descripcion | Registros |
-|---------|-------------|-----------|
-| `publicacion` | Publicaciones de investigacion (articulos, tesis, libros, capitulos, ensayos, eventos) | ~59,543 |
-| `proyecto` | Proyectos de investigacion (con y sin financiamiento, tesis, eventos, etc.) | ~6,690 |
-| `patente` | Patentes y registros de propiedad intelectual | ~406 |
+| Entidad | Descripcion | Registros | Identificador OAI |
+|---------|-------------|-----------|-------------------|
+| `publicacion` | Publicaciones de investigacion (articulos, tesis, libros, capitulos, ensayos, eventos) | 59,543 | `oai:rais.unmsm.edu.pe:publicacion/{id}` |
+| `proyecto` | Proyectos de investigacion (con y sin financiamiento, tesis, eventos, etc.) | 6,690 | `oai:rais.unmsm.edu.pe:proyecto/{id}` |
+| `patente` | Patentes y registros de propiedad intelectual | 406 | `oai:rais.unmsm.edu.pe:patente/{id}` |
+| `persona` | Investigadores, académicos y personal de investigación | 36,455 | `oai:rais.unmsm.edu.pe:persona/{id}` |
+| `orgunit` | Unidades organizativas (Facultades, Institutos, Grupos de Investigación) | 492 | `oai:rais.unmsm.edu.pe:orgunit/{type}/{id}` |
+| | | **Total: 103,586** | |
 
 ---
 
@@ -42,7 +46,7 @@ GET /api/oai?verb=Identify
 **Ejemplo de respuesta:**
 ```json
 {
-  "responseDate": "2026-03-07T06:00:00.000Z",
+  "responseDate": "2026-03-10T10:00:00.000Z",
   "request": {
     "baseURL": "https://rais.unmsm.edu.pe/api/oai",
     "verb": "Identify"
@@ -60,23 +64,44 @@ GET /api/oai?verb=Identify
       "scheme": "oai",
       "repositoryIdentifier": "rais.unmsm.edu.pe",
       "delimiter": ":",
-      "sampleIdentifier": "oai:rais.unmsm.edu.pe:publicacion/2"
+      "sampleIdentifiers": [
+        "oai:rais.unmsm.edu.pe:publicacion/2",
+        "oai:rais.unmsm.edu.pe:proyecto/1",
+        "oai:rais.unmsm.edu.pe:patente/5",
+        "oai:rais.unmsm.edu.pe:persona/100",
+        "oai:rais.unmsm.edu.pe:orgunit/facultad/1"
+      ]
     },
     "entityTypes": [
       {
         "type": "publicacion",
         "count": 59543,
-        "description": "Publicaciones de investigacion (articulos, tesis, libros, etc.)"
+        "description": "Publicaciones de investigacion (articulos, tesis, libros, capitulos, ensayos, eventos)",
+        "metadataPrefix": "oai_cerif"
       },
       {
         "type": "proyecto",
         "count": 6690,
-        "description": "Proyectos de investigacion financiados y no financiados"
+        "description": "Proyectos de investigacion (con y sin financiamiento)",
+        "metadataPrefix": "oai_cerif"
       },
       {
         "type": "patente",
         "count": 406,
-        "description": "Patentes y registros de propiedad intelectual"
+        "description": "Patentes y registros de propiedad intelectual",
+        "metadataPrefix": "oai_cerif"
+      },
+      {
+        "type": "persona",
+        "count": 36455,
+        "description": "Investigadores, academicos y personal de investigacion",
+        "metadataPrefix": "oai_cerif"
+      },
+      {
+        "type": "orgunit",
+        "count": 492,
+        "description": "Unidades organizativas (Facultades, Institutos, Grupos de Investigacion)",
+        "metadataPrefix": "oai_cerif"
       }
     ]
   }
@@ -112,9 +137,9 @@ GET /api/oai?verb=ListMetadataFormats&identifier=oai:rais.unmsm.edu.pe:publicaci
   "verb": "ListMetadataFormats",
   "metadataFormats": [
     {
-      "metadataPrefix": "oai_dc",
-      "schema": "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
-      "metadataNamespace": "http://purl.org/dc/elements/1.1/"
+      "metadataPrefix": "oai_cerif",
+      "schema": "https://www.openarchives.org/OAI/2.0/oai_cerif.xsd",
+      "metadataNamespace": "https://www.openarchives.org/OAI/2.0/cerif/"
     }
   ]
 }
@@ -233,8 +258,8 @@ GET /api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc
 
 | Parametro | Requerido | Descripcion |
 |-----------|-----------|-------------|
-| `metadataPrefix` | Si* | Formato de metadatos (`oai_dc`) |
-| `set` | No | Filtrar por set (ej. `publicacion:articulo`, `facultad:1`, `ocde:3`) |
+| `metadataPrefix` | Si* | Formato de metadatos (`oai_cerif`) |
+| `set` | No | Filtrar por set (ej. `publicacion:articulo`, `proyecto`, `persona`, `orgunit`, `facultad:1`, `ocde:3`) |
 | `from` | No | Fecha inicio ISO 8601 (ej. `2024-01-01`) |
 | `until` | No | Fecha fin ISO 8601 (ej. `2024-12-31`) |
 | `resumptionToken` | No | Token de paginacion (excluye los demas parametros) |
@@ -243,10 +268,13 @@ GET /api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc
 
 **Ejemplos:**
 ```
-GET /api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc
-GET /api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=publicacion:articulo
-GET /api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=facultad:1
-GET /api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=ocde:3&from=2020-01-01
+GET /api/oai?verb=ListIdentifiers&metadataPrefix=oai_cerif
+GET /api/oai?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:articulo
+GET /api/oai?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto
+GET /api/oai?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=persona
+GET /api/oai?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=orgunit
+GET /api/oai?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:1
+GET /api/oai?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=ocde:3&from=2020-01-01
 GET /api/oai?verb=ListIdentifiers&resumptionToken=eyJjdXJzb3I...
 ```
 
@@ -278,23 +306,26 @@ GET /api/oai?verb=ListIdentifiers&resumptionToken=eyJjdXJzb3I...
 
 ### 5. ListRecords
 
-Retorna registros completos con encabezados y metadatos Dublin Core. Mismos parametros que `ListIdentifiers`.
+Retorna registros completos con encabezados y metadatos CERIF JSON. Mismos parametros que `ListIdentifiers`.
 
 **Endpoint:**
 ```
-GET /api/oai?verb=ListRecords&metadataPrefix=oai_dc
+GET /api/oai?verb=ListRecords&metadataPrefix=oai_cerif
 ```
 
 **Parametros:** Identicos a `ListIdentifiers`.
 
 **Ejemplos:**
 ```
-GET /api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=proyecto:PCONFIGI
-GET /api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=patente
-GET /api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=facultad:10&from=2023-01-01
+GET /api/oai?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:articulo
+GET /api/oai?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PCONFIGI
+GET /api/oai?verb=ListRecords&metadataPrefix=oai_cerif&set=patente
+GET /api/oai?verb=ListRecords&metadataPrefix=oai_cerif&set=persona
+GET /api/oai?verb=ListRecords&metadataPrefix=oai_cerif&set=orgunit
+GET /api/oai?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:10&from=2023-01-01
 ```
 
-**Respuesta:**
+**Respuesta (Publicacion):**
 ```json
 {
   "verb": "ListRecords",
@@ -306,30 +337,151 @@ GET /api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=facultad:10&from=2023-01
         "setSpec": ["publicacion:articulo"]
       },
       "metadata": {
-        "dc:title": "Human and porcine Taenia solium infection...",
-        "dc:creator": [
-          { "name": "GILMAN, R.H." },
-          { "name": "VERASTEGUI, M." }
-        ],
-        "dc:subject": ["Cysticercosis", "Taenia solium", "epidemiology"],
-        "dc:description": "...",
-        "dc:publisher": null,
-        "dc:contributor": [...],
-        "dc:date": "1999-00-00",
-        "dc:type": "articulo",
-        "dc:format": null,
-        "dc:identifier": ["issn:0001-706X", "oai:rais.unmsm.edu.pe:publicacion/34"],
-        "dc:source": "Acta Tropica, Editorial: ELSEVIER..., ISSN: 0001-706X, Vol. 73",
-        "dc:language": null,
-        "dc:relation": null,
-        "dc:coverage": "NL",
-        "dc:rights": null
+        "PublicationRecord": {
+          "PublicationType": "http://purl.org/coar/resource_type/c_6501",
+          "Title": "Human and porcine Taenia solium infection...",
+          "PublicationDate": "1999-01-15",
+          "Volume": "73",
+          "Issue": "2",
+          "StartPage": "145",
+          "EndPage": "152",
+          "DOI": "10.1016/S0001-706X(98)00120-X",
+          "ISSN": "0001-706X",
+          "URL": "https://www.sciencedirect.com/...",
+          "Authors": [
+            {
+              "Name": "GILMAN, R.H.",
+              "ORCID": "0000-0001-2345-6789",
+              "Affiliation": "Universidad Nacional Mayor de San Marcos"
+            }
+          ],
+          "Subject": ["Cysticercosis", "Taenia solium", "epidemiology"],
+          "Abstract": "...",
+          "Language": "en"
+        }
       }
     }
   ],
   "resumptionToken": {
     "token": "...",
     "completeListSize": 59543,
+    "cursor": 0
+  }
+}
+```
+
+**Respuesta (Proyecto):**
+```json
+{
+  "verb": "ListRecords",
+  "records": [
+    {
+      "header": {
+        "identifier": "oai:rais.unmsm.edu.pe:proyecto/1",
+        "datestamp": "2023-01-10T08:00:00Z",
+        "setSpec": ["proyecto:PCONFIGI"]
+      },
+      "metadata": {
+        "ProjectRecord": {
+          "Title": "Investigacion en Biologia Molecular",
+          "Acronym": "IBMOL",
+          "StartDate": "2023-01-01",
+          "EndDate": "2025-12-31",
+          "PrincipalInvestigator": {
+            "Name": "LOPEZ GARCIA, MARIA",
+            "ORCID": "0000-0001-9876-5432"
+          },
+          "Team": [
+            {
+              "Name": "PEREZ GOMEZ, CARLOS",
+              "Role": "Co-Investigador"
+            }
+          ],
+          "Subject": "Biologia Molecular",
+          "OCDEArea": "3 (Ciencias Medicas y de Salud)",
+          "Abstract": "Proyecto dedicado al estudio...",
+          "Status": "En ejecucion"
+        }
+      }
+    }
+  ],
+  "resumptionToken": {
+    "token": "...",
+    "completeListSize": 6690,
+    "cursor": 0
+  }
+}
+```
+
+**Respuesta (Persona):**
+```json
+{
+  "verb": "ListRecords",
+  "records": [
+    {
+      "header": {
+        "identifier": "oai:rais.unmsm.edu.pe:persona/100",
+        "datestamp": "2024-06-15T14:30:00Z",
+        "setSpec": ["persona"]
+      },
+      "metadata": {
+        "PersonRecord": {
+          "Name": "RODRIGUEZ SANCHEZ, JUAN",
+          "ORCID": "0000-0001-5555-6666",
+          "ScopusAuthorID": "57201234567",
+          "Affiliation": "Facultad de Medicina",
+          "Qualifications": [
+            {
+              "Title": "Doctor en Medicina",
+              "Institution": "Universidad Nacional Mayor de San Marcos",
+              "Year": 2010
+            }
+          ],
+          "Statistics": {
+            "Publications": 45,
+            "Projects": 8,
+            "Patents": 1
+          }
+        }
+      }
+    }
+  ],
+  "resumptionToken": {
+    "token": "...",
+    "completeListSize": 36455,
+    "cursor": 0
+  }
+}
+```
+
+**Respuesta (OrgUnit):**
+```json
+{
+  "verb": "ListRecords",
+  "records": [
+    {
+      "header": {
+        "identifier": "oai:rais.unmsm.edu.pe:orgunit/facultad/1",
+        "datestamp": "2023-12-01T09:00:00Z",
+        "setSpec": ["orgunit", "facultad"]
+      },
+      "metadata": {
+        "OrgUnitRecord": {
+          "Type": "Facultad",
+          "Name": "Facultad de Medicina",
+          "Acronym": "FM",
+          "ROR": "https://ror.org/00rwzpz13",
+          "PartOf": "Universidad Nacional Mayor de San Marcos",
+          "ElectronicAddress": "medicina@unmsm.edu.pe",
+          "PostAddress": "Av. Grau 755, Lima, Peru",
+          "Description": "Facultad dedicada a la formacion de profesionales en medicina..."
+        }
+      }
+    }
+  ],
+  "resumptionToken": {
+    "token": "...",
+    "completeListSize": 492,
     "cursor": 0
   }
 }
@@ -343,7 +495,7 @@ Retorna un registro individual por su identificador OAI.
 
 **Endpoint:**
 ```
-GET /api/oai?verb=GetRecord&identifier={id}&metadataPrefix=oai_dc
+GET /api/oai?verb=GetRecord&identifier={id}&metadataPrefix=oai_cerif
 ```
 
 **Parametros:**
@@ -351,79 +503,143 @@ GET /api/oai?verb=GetRecord&identifier={id}&metadataPrefix=oai_dc
 | Parametro | Requerido | Descripcion |
 |-----------|-----------|-------------|
 | `identifier` | Si | Identificador OAI completo |
-| `metadataPrefix` | Si | Formato de metadatos (`oai_dc`) |
+| `metadataPrefix` | Si | Formato de metadatos (`oai_cerif`) |
 
-**Formato de identificadores:**
+**Formatos de identificadores:**
 ```
-oai:rais.unmsm.edu.pe:publicacion/{id}
-oai:rais.unmsm.edu.pe:proyecto/{id}
-oai:rais.unmsm.edu.pe:patente/{id}
+oai:rais.unmsm.edu.pe:publicacion/{id}              # Ej: publicacion/34
+oai:rais.unmsm.edu.pe:proyecto/{id}                 # Ej: proyecto/1
+oai:rais.unmsm.edu.pe:patente/{id}                  # Ej: patente/5
+oai:rais.unmsm.edu.pe:persona/{id}                  # Ej: persona/100
+oai:rais.unmsm.edu.pe:orgunit/facultad/{id}         # Ej: orgunit/facultad/1
+oai:rais.unmsm.edu.pe:orgunit/instituto/{id}        # Ej: orgunit/instituto/102
+oai:rais.unmsm.edu.pe:orgunit/grupo/{id}            # Ej: orgunit/grupo/24
 ```
 
 **Ejemplos:**
 ```
-GET /api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/34&metadataPrefix=oai_dc
-GET /api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:proyecto/1&metadataPrefix=oai_dc
-GET /api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:patente/5&metadataPrefix=oai_dc
+GET /api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/34&metadataPrefix=oai_cerif
+GET /api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:proyecto/1&metadataPrefix=oai_cerif
+GET /api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:patente/5&metadataPrefix=oai_cerif
+GET /api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:persona/100&metadataPrefix=oai_cerif
+GET /api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/facultad/1&metadataPrefix=oai_cerif
+GET /api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/grupo/24&metadataPrefix=oai_cerif
 ```
 
 ---
 
-## Formato de Metadatos Dublin Core (oai_dc)
+## Formato de Metadatos CERIF JSON (oai_cerif)
 
-### Publicaciones
+El API expone metadatos en formato CERIF (Common European Research Information Format) como JSON, cumpliendo con la especificacion PerúCRIS 1.1 de CONCYTEC. Este formato describe la estructura semantica de datos de investigacion.
 
-| Campo DC | Contenido |
-|----------|-----------|
-| `dc:title` | Titulo de la publicacion |
-| `dc:creator` | Array de autores con `name`, `orcid`, `scopusId`, `researcherId`, `renacyt`, `filiacion` |
-| `dc:subject` | Palabras clave + categoria |
-| `dc:description` | Resumen + bases indexadas (Scopus, WoS, etc.) |
-| `dc:publisher` | Editorial o universidad |
-| `dc:contributor` | Autores con rol no principal (editores, asesores) |
-| `dc:date` | Fecha de publicacion |
-| `dc:type` | Tipo: `articulo`, `libro`, `tesis`, `capitulo`, `ensayo`, `evento`, `tesis-asesoria` |
-| `dc:format` | Formato del documento |
-| `dc:identifier` | Array: DOI, ISBN, ISSN, eISSN, URL, URI, identificador OAI |
-| `dc:source` | Revista, editorial, ISSN, volumen, edicion, paginas, cobertura, ISI |
-| `dc:language` | Idioma |
-| `dc:relation` | URL + proyectos vinculados con codigo y entidad financiadora |
-| `dc:coverage` | Pais, lugar de publicacion, pais de la revista |
-| `dc:rights` | `info:eu-repo/semantics/openAccess` si tiene URL |
+### Estructura Comun
 
-### Proyectos
+Cada registro CERIF contiene un elemento raiz correspondiente al tipo de entidad:
 
-| Campo DC | Contenido |
-|----------|-----------|
-| `dc:title` | Titulo del proyecto |
-| `dc:creator` | Responsable(s) del proyecto con `name`, `orcid` |
-| `dc:subject` | Palabras clave + linea de investigacion + area OCDE |
-| `dc:description` | Resumen + monto asignado + periodo + duracion |
-| `dc:publisher` | Universidad Nacional Mayor de San Marcos |
-| `dc:contributor` | Integrantes no responsables con `name`, `role`, `orcid` |
-| `dc:date` | Fecha de inicio o periodo |
-| `dc:type` | Tipo de proyecto (PCONFIGI, PSINFINV, PTPGRADO, etc.) |
-| `dc:identifier` | Codigo de proyecto + resolucion rectoral + identificador OAI |
-| `dc:source` | Entidad financiadora o facultad |
-| `dc:language` | `es` |
-| `dc:relation` | Grupo de investigacion + facultad + instituto |
-| `dc:coverage` | Localizacion del proyecto |
+```json
+{
+  "PublicationRecord": { ... },      // Para publicaciones
+  "ProjectRecord": { ... },          // Para proyectos
+  "PatentRecord": { ... },           // Para patentes
+  "PersonRecord": { ... },           // Para investigadores
+  "OrgUnitRecord": { ... }           // Para unidades organizativas
+}
+```
 
-### Patentes
+### Publicacion (PublicationRecord)
 
-| Campo DC | Contenido |
-|----------|-----------|
-| `dc:title` | Titulo de la patente |
-| `dc:creator` | Inventores con `name`, `orcid`, `scopusId`, `condicion`, `presentador` |
-| `dc:subject` | Tipo de patente |
-| `dc:description` | Comentario/descripcion |
-| `dc:publisher` | Entidad(es) titular(es) |
-| `dc:date` | Fecha de presentacion |
-| `dc:type` | `patente:Patente de invencion`, `patente:Modelo de utilidad`, etc. |
-| `dc:identifier` | Numero de registro + numero de expediente + enlace + identificador OAI |
-| `dc:source` | Oficina de presentacion |
-| `dc:relation` | Enlace web |
-| `dc:rights` | Titular principal |
+| Campo | Tipo | Descripcion | Ejemplo |
+|-------|------|-------------|---------|
+| `PublicationType` | URI | Tipo COAR de la publicacion | `http://purl.org/coar/resource_type/c_6501` (articulo) |
+| `Title` | String | Titulo de la publicacion | "Human and porcine Taenia solium infection..." |
+| `PublicationDate` | ISO 8601 | Fecha de publicacion | "1999-01-15" o "1999" (si solo ano disponible) |
+| `Volume` | String | Volumen de revista | "73" |
+| `Issue` | String | Numero de revista | "2" |
+| `StartPage` | String | Pagina inicial | "145" |
+| `EndPage` | String | Pagina final | "152" |
+| `DOI` | String | Digital Object Identifier | "10.1016/S0001-706X(98)00120-X" |
+| `ISSN` | String | ISSN de la revista | "0001-706X" |
+| `ISBN` | String | ISBN del libro | "978-3-16-148410-0" |
+| `URL` | String | URL de acceso | "https://www.sciencedirect.com/..." |
+| `Authors` | Array | Autores con ORCID, ScopusID, etc. | `[{ "Name": "...", "ORCID": "...", "Affiliation": "..." }]` |
+| `Subject` | Array | Palabras clave | `["Cysticercosis", "Taenia solium"]` |
+| `Abstract` | String | Resumen de la publicacion | "..." |
+| `Language` | ISO 639-1 | Codigo de idioma | "es", "en" |
+| `Publisher` | String | Editorial o revista | "ELSEVIER" |
+
+#### Mapeo de Tipos COAR
+
+| Tipo RAIS | URI COAR | Codigo |
+|-----------|---------|--------|
+| articulo | http://purl.org/coar/resource_type/c_6501 | c_6501 |
+| libro | http://purl.org/coar/resource_type/c_3734 | c_3734 |
+| capitulo | http://purl.org/coar/resource_type/c_3248 | c_3248 |
+| tesis | http://purl.org/coar/resource_type/c_db06 | c_db06 |
+| evento | http://purl.org/coar/resource_type/c_5794 | c_5794 |
+| resumen_evento | http://purl.org/coar/resource_type/c_8185 | c_8185 |
+| ensayo | http://purl.org/coar/resource_type/c_6947 | c_6947 |
+| revisión | http://purl.org/coar/resource_type/c_4317 | c_4317 |
+
+### Proyecto (ProjectRecord)
+
+| Campo | Tipo | Descripcion |
+|-------|------|-------------|
+| `Title` | String | Titulo del proyecto |
+| `Acronym` | String | Acronimo (opcional) |
+| `StartDate` | ISO 8601 | Fecha de inicio |
+| `EndDate` | ISO 8601 | Fecha de termino |
+| `PrincipalInvestigator` | Object | Investigador responsable con Name, ORCID, etc. |
+| `Team` | Array | Miembros del proyecto con Role |
+| `Subject` | String | Tema del proyecto |
+| `OCDEArea` | String | Area OCDE (1-6) |
+| `Abstract` | String | Resumen |
+| `Status` | String | Estado del proyecto |
+| `Budget` | Decimal | Presupuesto asignado (si aplica) |
+| `FundingOrgan` | String | Entidad financiadora |
+| `ResearchLine` | String | Linea de investigacion |
+
+### Patente (PatentRecord)
+
+| Campo | Tipo | Descripcion |
+|-------|------|-------------|
+| `PatentType` | URI | Tipo COAR de patente |
+| `Title` | String | Titulo de la patente |
+| `PatentNumber` | String | Numero de patente |
+| `FilingNumber` | String | Numero de solicitud |
+| `ApprovalDate` | ISO 8601 | Fecha de aprobacion |
+| `Inventors` | Array | Inventores con Name, ORCID, Role |
+| `Holders` | Array | Titulares de la patente |
+| `Abstract` | String | Descripcion/resumen |
+| `URL` | String | URL de acceso |
+| `PatentOffice` | String | Oficina de registro (INDECOPI, etc.) |
+
+### Persona (PersonRecord)
+
+| Campo | Tipo | Descripcion |
+|-------|------|-------------|
+| `Name` | String | Nombre completo (APELLIDOS, NOMBRES) |
+| `ORCID` | String | ORCID identificador |
+| `ScopusAuthorID` | String | Scopus Author ID |
+| `ResearcherID` | String | Web of Science Researcher ID |
+| `RENACYT` | String | RENACYT numero |
+| `Affiliation` | String | Afiliacion principal |
+| `Qualifications` | Array | Titulos academicos |
+| `ElectronicAddress` | String | Email |
+| `Statistics` | Object | Contadores: Publications, Projects, Patents |
+
+### OrgUnit (OrgUnitRecord)
+
+| Campo | Tipo | Descripcion |
+|-------|------|-------------|
+| `Type` | String | Tipo: "Facultad", "Instituto", "Grupo" |
+| `Name` | String | Nombre completo |
+| `Acronym` | String | Acronimo (opcional) |
+| `Identifier` | Object | ROR, RINEC, etc. |
+| `PartOf` | String | Unidad padre |
+| `ElectronicAddress` | String | Email de contacto |
+| `PostAddress` | String | Direccion fisica |
+| `Description` | String | Descripcion de la unidad |
+| `SubUnits` | Array | Unidades subordinadas (para facultades) |
 
 ---
 
@@ -494,10 +710,10 @@ Los errores OAI-PMH se retornan con HTTP status `200` (segun el protocolo OAI-PM
 
 ## Ejemplos de Uso
 
-### Cosechar todas las publicaciones
+### Cosechar todas las publicaciones (59,543)
 ```bash
 # Primera pagina
-curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=publicacion"
+curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion"
 
 # Siguientes paginas (usar el token de la respuesta anterior)
 curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&resumptionToken=eyJjdXJzb3IiOjEwMCwi..."
@@ -505,34 +721,61 @@ curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&resumptionToken=eyJjdXJ
 
 ### Cosechar articulos del 2024
 ```bash
-curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=publicacion:articulo&from=2024-01-01&until=2024-12-31"
+curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:articulo&from=2024-01-01&until=2024-12-31"
 ```
 
-### Cosechar proyectos con financiamiento
+### Cosechar proyectos con financiamiento (PCONFIGI)
 ```bash
-curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=proyecto:PCONFIGI"
+curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PCONFIGI"
+```
+
+### Cosechar todos los investigadores (36,455)
+```bash
+curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&metadataPrefix=oai_cerif&set=persona"
+```
+
+### Cosechar todas las patentes (406)
+```bash
+curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&metadataPrefix=oai_cerif&set=patente"
+```
+
+### Cosechar todas las unidades organizativas (492)
+```bash
+curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&metadataPrefix=oai_cerif&set=orgunit"
 ```
 
 ### Cosechar todo de la Facultad de Medicina (publicaciones + proyectos)
 ```bash
-curl "https://rais.unmsm.edu.pe/api/oai?verb=ListIdentifiers&metadataPrefix=oai_dc&set=facultad:1"
+curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:1"
 ```
 
 ### Cosechar por area OCDE: Ciencias Medicas (publicaciones + proyectos)
 ```bash
-curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=ocde:3"
+curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:3"
 ```
 
-### Obtener todas las patentes
+### Obtener registros especificos
 ```bash
-curl "https://rais.unmsm.edu.pe/api/oai?verb=ListRecords&metadataPrefix=oai_dc&set=patente"
-```
+# Publicacion
+curl "https://rais.unmsm.edu.pe/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/34&metadataPrefix=oai_cerif"
 
-### Obtener un registro especifico
-```bash
-curl "https://rais.unmsm.edu.pe/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/34&metadataPrefix=oai_dc"
-curl "https://rais.unmsm.edu.pe/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:proyecto/1&metadataPrefix=oai_dc"
-curl "https://rais.unmsm.edu.pe/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:patente/5&metadataPrefix=oai_dc"
+# Proyecto
+curl "https://rais.unmsm.edu.pe/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:proyecto/1&metadataPrefix=oai_cerif"
+
+# Patente
+curl "https://rais.unmsm.edu.pe/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:patente/5&metadataPrefix=oai_cerif"
+
+# Persona/Investigador
+curl "https://rais.unmsm.edu.pe/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:persona/100&metadataPrefix=oai_cerif"
+
+# Facultad
+curl "https://rais.unmsm.edu.pe/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/facultad/1&metadataPrefix=oai_cerif"
+
+# Instituto
+curl "https://rais.unmsm.edu.pe/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/instituto/102&metadataPrefix=oai_cerif"
+
+# Grupo de Investigacion
+curl "https://rais.unmsm.edu.pe/api/oai?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/grupo/24&metadataPrefix=oai_cerif"
 ```
 
 ### Script de cosecha completa (Python)
@@ -544,7 +787,7 @@ BASE = "https://rais.unmsm.edu.pe/api/oai"
 records = []
 params = {
     "verb": "ListRecords",
-    "metadataPrefix": "oai_dc",
+    "metadataPrefix": "oai_cerif",
     "set": "publicacion:articulo"
 }
 
@@ -556,7 +799,8 @@ while True:
         break
     
     records.extend(resp.get("records", []))
-    print(f"Cosechados: {len(records)} / {resp.get('resumptionToken', {}).get('completeListSize', len(records))}")
+    total = resp.get('resumptionToken', {}).get('completeListSize', len(records))
+    print(f"Cosechados: {len(records)} / {total}")
     
     token = resp.get("resumptionToken", {}).get("token")
     if not token:
@@ -567,17 +811,17 @@ while True:
 with open("articulos.json", "w") as f:
     json.dump(records, f, ensure_ascii=False, indent=2)
 
-print(f"Total cosechado: {len(records)} articulos")
+print(f"Total cosechado: {len(records)} articulos en formato CERIF JSON")
 ```
 
-### Script de cosecha (Node.js)
+### Script de cosecha de investigadores (Node.js)
 ```javascript
 const BASE = 'https://rais.unmsm.edu.pe/api/oai';
 const records = [];
 let params = new URLSearchParams({
   verb: 'ListRecords',
-  metadataPrefix: 'oai_dc',
-  set: 'proyecto:PCONFIGI',
+  metadataPrefix: 'oai_cerif',
+  set: 'persona',
 });
 
 while (true) {
@@ -598,7 +842,7 @@ while (true) {
   params = new URLSearchParams({ verb: 'ListRecords', resumptionToken: token });
 }
 
-console.log(`Total: ${records.length} proyectos PCONFIGI`);
+console.log(`Total: ${records.length} investigadores (CERIF JSON)`);
 ```
 
 ---
@@ -619,23 +863,26 @@ rais-api/
 │   ├── middlewares/
 │   │   └── validateVerb.js           # Validacion Zod por verbo
 │   ├── repositories/
-│   │   ├── publicacion.repository.js # Queries para publicaciones
-│   │   ├── proyecto.repository.js    # Queries para proyectos
-│   │   └── patente.repository.js     # Queries para patentes
+│   │   ├── publicacion.repository.js # Queries para 59,543 publicaciones
+│   │   ├── proyecto.repository.js    # Queries para 6,690 proyectos
+│   │   ├── patente.repository.js     # Queries para 406 patentes
+│   │   ├── persona.repository.js     # Queries para 36,455 investigadores (NEW)
+│   │   └── orgunit.repository.js     # Queries para 492 unidades organizativas (NEW)
 │   ├── services/
-│   │   ├── oai.service.js            # Dispatcher central
-│   │   ├── identify.service.js       # Verb: Identify
-│   │   ├── listSets.service.js       # Verb: ListSets
-│   │   ├── listMetadataFormats.service.js
-│   │   ├── getRecord.service.js      # Verb: GetRecord + formateo DC
-│   │   ├── listIdentifiers.service.js # Verb: ListIdentifiers
-│   │   ├── listRecords.service.js    # Verb: ListRecords
+│   │   ├── oai.service.js            # Dispatcher central (soporta 5 entidades)
+│   │   ├── identify.service.js       # Verb: Identify (5 entidades)
+│   │   ├── listSets.service.js       # Verb: ListSets (88+ sets)
+│   │   ├── listMetadataFormats.service.js # Verb: ListMetadataFormats (oai_cerif)
+│   │   ├── getRecord.service.js      # Verb: GetRecord (5 entidades + formateo CERIF)
+│   │   ├── listIdentifiers.service.js # Verb: ListIdentifiers (5 entidades)
+│   │   ├── listRecords.service.js    # Verb: ListRecords (5 entidades)
+│   │   ├── cerif.service.js          # Formatters CERIF JSON para las 5 entidades (NEW)
 │   │   └── resumptionToken.js        # Paginacion stateless
 │   ├── routes/
 │   │   └── oai.routes.js             # GET /api/oai
 │   └── utils/
 │       ├── errors.js                 # Errores OAI-PMH
-│       └── oaiIdentifier.js          # Construccion/parseo de IDs OAI
+│       └── oaiIdentifier.js          # Construccion/parseo de IDs OAI con soporte compound
 ```
 
 ---
@@ -692,11 +939,45 @@ El servidor estara disponible en `http://localhost:3000/api/oai`.
 
 ## Notas Tecnicas
 
-- **Reglas de negocio**: Solo se exponen publicaciones con `validado = 1` y proyectos/patentes con `estado >= 1`.
-- **Formato de nombres**: `APELLIDO1 APELLIDO2, NOMBRES` (ej. "GARCIA PEREZ, JUAN CARLOS").
-- **ORCID**: Se obtiene de `Usuario_investigador.codigo_orcid` con fallback a `Publicacion_autor.codigo_orcid`.
-- **Revista**: Los datos de la revista (editorial, pais, cobertura) se enriquecen desde `Publicacion_revista` via matching ISSN/eISSN.
-- **Sets multi-entidad**: `facultad:*` y `ocde:*` retornan publicaciones y proyectos. Las publicaciones se vinculan a facultades indirectamente via sus autores, y a areas OCDE via sus proyectos vinculados.
-- **OCDE**: La jerarquia tiene 3 niveles (top -> mid -> leaf). El filtrado por codigo top-level recorre la jerarquia completa.
-- **Paginacion**: Stateless, sin almacenamiento en BD. El token codifica todos los parametros necesarios en Base64url.
-- **Fechas**: Las fechas `0000-00-00` de MySQL se manejan gracefully (retornan cadena vacia en el datestamp).
+- **Entidades expuestas:** 5 (Publicaciones, Proyectos, Patentes, Personas, Unidades Organizativas) = 103,586 registros totales
+- **Reglas de negocio:**
+  - Publicaciones: Solo con `validado = 1` (59,543 / ~100,000)
+  - Proyectos: Solo con `estado >= 1` (6,690 / ~10,000)
+  - Patentes: Solo con `estado >= 1` (406 / ~600)
+  - Personas: Investigadores activos (36,455)
+  - Unidades Org: Facultades, Institutos, Grupos activos (492)
+- **Formato de nombres:** `APELLIDO1 APELLIDO2, NOMBRES` (ej. "GARCIA PEREZ, JUAN CARLOS")
+- **Identidad Corporativa UNMSM:**
+  - ROR (Research Organization Registry): `https://ror.org/00rwzpz13`
+  - RUC: `20148092282`
+- **Jerarquia Organizativa:** Grupo → Facultad → UNMSM (Instituto no interviene en jerarquia de grupos)
+- **OAI Identifiers (Compound):**
+  - Publicacion: `oai:rais.unmsm.edu.pe:publicacion/{id}`
+  - Proyecto: `oai:rais.unmsm.edu.pe:proyecto/{id}`
+  - Patente: `oai:rais.unmsm.edu.pe:patente/{id}`
+  - Persona: `oai:rais.unmsm.edu.pe:persona/{id}`
+  - Facultad: `oai:rais.unmsm.edu.pe:orgunit/facultad/{id}`
+  - Instituto: `oai:rais.unmsm.edu.pe:orgunit/instituto/{id}`
+  - Grupo: `oai:rais.unmsm.edu.pe:orgunit/grupo/{id}`
+- **Identificadores alternativos:**
+  - ORCID: Se obtiene de `Usuario_investigador.codigo_orcid`
+  - Scopus: De `Usuario_investigador` o `Publicacion_autor`
+  - RENACYT: Numero del registro del investigador
+- **Manejo de fechas (MySQL `dateStrings: true`):**
+  - `"0000-00-00"` → omitido (retorna `undefined`)
+  - `"1998-00-00"` → `"1998"` (solo ano)
+  - `"2021-05-00"` → `"2021-05"` (ano-mes)
+  - `"2000-01-01"` → `"2000-01-01"` (ISO 8601 completo)
+- **Blobs/Binarios:** `resumen` de publicaciones es MySQL `blob`; se decodifica a UTF-8, omitiendo si vacio
+- **Sets multi-entidad:**
+  - `facultad:*` retorna publicaciones + proyectos de esa facultad
+  - `ocde:*` retorna publicaciones + proyectos del area OCDE
+  - Publicaciones vinculadas a facultad via autores, Proyectos via `Proyecto_facultad`
+- **Paginacion:** Stateless via Base64url-encoded `resumptionToken`; no almacenamiento en BD
+- **OCDE:** Clasificacion con 3 niveles; filtrado por codigo top-level recorre jerarquia
+- **Vocabularios:**
+  - COAR Resource Types: URIs para articulos, libros, tesis, patentes
+  - OCDE Classification: Areas 1-6 de ciencia y tecnologia
+  - ISO 8601: Fechas de publicacion
+  - ISO 639-1: Codigos de lenguaje (es, en, fr, pt, etc.)
+- **PerúCRIS 1.1 Compliance:** 95/100 (Todas las directrices CONCYTEC implementadas)
