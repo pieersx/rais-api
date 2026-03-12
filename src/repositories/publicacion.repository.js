@@ -17,12 +17,12 @@ function buildWhereClause(filters = {}) {
   const joins = [];
 
   if (filters.set) {
-    if (filters.set.startsWith('publicacion:')) {
-      // Set especifico: publicacion:articulo -> tipo_publicacion = 'articulo'
-      const setVal = filters.set.replace('publicacion:', '');
+    if (filters.set.startsWith('publications:')) {
+      // Set especifico: publications:articulo -> tipo_publicacion = 'articulo'
+      const setVal = filters.set.replace('publications:', '');
       conditions.push('p.tipo_publicacion = ?');
       params.push(setVal);
-    } else if (filters.set === 'publicacion') {
+    } else if (filters.set === 'publications') {
       // Parent set: todas las publicaciones (sin filtro de tipo)
     } else if (filters.set.startsWith('facultad:')) {
       // Filtrar por facultad a traves de autores -> investigador -> grupo -> facultad

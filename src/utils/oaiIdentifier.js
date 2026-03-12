@@ -2,46 +2,47 @@
  * Utilidades para generar y parsear identificadores OAI-PMH.
  *
  * Formato: oai:<dominio>:<tipo>/<id>
+ * Formato oficial PerúCRIS: tipos en inglés capitalizado (Publications, Projects, Patents, Persons, OrgUnits)
  * Ejemplos:
- *   oai:rais.unmsm.edu.pe:publicacion/42
- *   oai:rais.unmsm.edu.pe:persona/1234
- *   oai:rais.unmsm.edu.pe:orgunit/facultad-3
- *   oai:rais.unmsm.edu.pe:orgunit/instituto-5
- *   oai:rais.unmsm.edu.pe:orgunit/grupo-10
+ *   oai:cris.unmsm.edu.pe:Publications/42
+ *   oai:cris.unmsm.edu.pe:Persons/1234
+ *   oai:cris.unmsm.edu.pe:OrgUnits/facultad-3
+ *   oai:cris.unmsm.edu.pe:OrgUnits/instituto-5
+ *   oai:cris.unmsm.edu.pe:OrgUnits/grupo-10
  */
 
-const OAI_DOMAIN = 'rais.unmsm.edu.pe';
+const OAI_DOMAIN = 'cris.unmsm.edu.pe';
 
 /**
- * Genera un OAI identifier a partir de un tipo y un id.
- * @param {'publicacion'|'proyecto'|'patente'|'persona'|'orgunit'} type
- * @param {number|string} id - Numerico para la mayoria, compuesto para orgunit (e.g. "facultad-3")
- * @returns {string} e.g. "oai:rais.unmsm.edu.pe:publicacion/42"
+ * Genera un OAI identifier a partir de un tipo y un id (formato oficial PerúCRIS).
+ * @param {'Publications'|'Projects'|'Patents'|'Persons'|'OrgUnits'} type - Tipo en inglés capitalizado
+ * @param {number|string} id - Numerico para la mayoria, compuesto para OrgUnits (e.g. "facultad-3")
+ * @returns {string} e.g. "oai:cris.unmsm.edu.pe:Publications/42"
  */
 export function buildOaiIdentifier(type, id) {
   return `oai:${OAI_DOMAIN}:${type}/${id}`;
 }
 
 /**
- * Construye un OAI identifier compuesto para unidades organizativas.
+ * Construye un OAI identifier para unidades organizativas (formato oficial).
  * @param {'facultad'|'instituto'|'grupo'} subtype
  * @param {number} id
- * @returns {string} e.g. "oai:rais.unmsm.edu.pe:orgunit/facultad-3"
+ * @returns {string} e.g. "oai:cris.unmsm.edu.pe:OrgUnits/facultad-3"
  */
 export function buildOrgUnitIdentifier(subtype, id) {
-  return `oai:${OAI_DOMAIN}:orgunit/${subtype}-${id}`;
+  return `oai:${OAI_DOMAIN}:OrgUnits/${subtype}-${id}`;
 }
 
 /**
- * Parsea un OAI identifier y devuelve el tipo y el id.
- * Soporta IDs simples (numericos) y compuestos (orgunit/facultad-3).
- * @param {string} identifier - e.g. "oai:rais.unmsm.edu.pe:publicacion/42"
+ * Parsea un OAI identifier (formato oficial PerúCRIS) y devuelve el tipo y el id.
+ * Soporta IDs simples (numericos) y compuestos (OrgUnits/facultad-3).
+ * @param {string} identifier - e.g. "oai:cris.unmsm.edu.pe:Publications/42"
  * @returns {{ type: string, id: number|string, subtype?: string, numericId?: number } | null}
  */
 export function parseOaiIdentifier(identifier) {
   if (!identifier || typeof identifier !== 'string') return null;
 
-  const regex = /^oai:rais\.unmsm\.edu\.pe:(\w+)\/([\w-]+)$/;
+  const regex = /^oai:cris\.unmsm\.edu\.pe:(\w+)\/([\w-]+)$/;
   const match = identifier.match(regex);
 
   if (!match) return null;
@@ -49,12 +50,12 @@ export function parseOaiIdentifier(identifier) {
   const type = match[1];
   const rawId = match[2];
 
-  // ID compuesto para orgunit: "facultad-3", "instituto-5", "grupo-10"
-  if (type === 'orgunit') {
+  // ID compuesto para OrgUnits: "facultad-3", "instituto-5", "grupo-10"
+  if (type === 'OrgUnits') {
     const compoundMatch = rawId.match(/^(facultad|instituto|grupo)-(\d+)$/);
     if (!compoundMatch) return null;
     return {
-      type: 'orgunit',
+      type: 'OrgUnits',
       id: rawId,
       subtype: compoundMatch[1],
       numericId: Number(compoundMatch[2]),

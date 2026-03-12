@@ -21,11 +21,11 @@ function buildWhereClause(filters = {}) {
   const params = [];
 
   if (filters.set) {
-    if (filters.set.startsWith('persona:facultad-')) {
-      const facId = Number(filters.set.replace('persona:facultad-', ''));
+    if (filters.set.startsWith('persons:facultad-')) {
+      const facId = Number(filters.set.replace('persons:facultad-', ''));
       conditions.push('ui.facultad_id = ?');
       params.push(facId);
-    } else if (filters.set === 'persona') {
+    } else if (filters.set === 'persons') {
       // Parent set: todas las personas (sin filtro)
     }
   }

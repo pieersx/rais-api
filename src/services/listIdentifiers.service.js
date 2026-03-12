@@ -10,10 +10,10 @@ import { getSetSpec } from './getRecord.service.js';
 
 /**
  * Servicio para el verbo ListIdentifiers.
- * Soporta 5 entidades: publicacion, proyecto, patente, persona, orgunit.
+ * Soporta 5 entidades: Publications, Projects, Patents, Persons, OrgUnits.
  *
  * Para sets multi-entidad (facultad:*, ocde:*), combina resultados
- * de publicaciones y proyectos en secuencia.
+ * de Publications y Projects en secuencia.
  */
 export async function handleListIdentifiers(oaiParams) {
   const pagination = extractPaginationParams(oaiParams);
@@ -38,8 +38,8 @@ export async function handleListIdentifiers(oaiParams) {
   if (rows.length === 0) throw noRecordsMatch();
 
   const headers = rows.map((row) => ({
-    identifier: entityType === 'orgunit'
-      ? buildOaiIdentifier('orgunit', row.id)
+    identifier: entityType === 'OrgUnits'
+      ? buildOaiIdentifier('OrgUnits', row.id)
       : buildOaiIdentifier(entityType, row.id),
     datestamp: toDatestamp(row.updated_at),
     setSpec: getSetSpecFromRow(row, entityType),
@@ -49,20 +49,20 @@ export async function handleListIdentifiers(oaiParams) {
     cursor, pageSize, completeListSize, set, from, until, metadataPrefix,
   });
 
-  const result = { verb: 'ListIdentifiers', headers };
+  const result = { verb: 'ListIdentifiers', header: headers };
   if (resumption) result.resumptionToken = resumption;
   return result;
 }
 
 /**
  * Handles ListIdentifiers for multi-entity sets (facultad:*, ocde:*).
- * Returns publicaciones first, then proyectos, using a composite cursor:
- * { cursor, entity: 'publicacion'|'proyecto', pubTotal, proyTotal }
+ * Returns Publications first, then Projects, using a composite cursor:
+ * { cursor, entity: 'Publications'|'Projects', pubTotal, proyTotal }
  */
 async function handleMultiEntityIdentifiers(pagination) {
   const { set, from, until, metadataPrefix, pageSize } = pagination;
 
-  let entity = 'publicacion';
+  let entity = 'Publications';
   let cursor = 0;
   let pubTotal = null;
   let proyTotal = null;
@@ -89,41 +89,41 @@ async function handleMultiEntityIdentifiers(pagination) {
   let nextEntity = entity;
   let nextCursor = cursor;
 
-  if (entity === 'publicacion' && remaining > 0 && cursor < pubTotal) {
+  if (entity === 'Publications' && remaining > 0 && cursor < pubTotal) {
     const pubRows = await pubRepo.getIdentifiers({ set, from, until, cursor, limit: remaining });
     for (const row of pubRows) {
       headers.push({
-        identifier: buildOaiIdentifier('publicacion', row.id),
+        identifier: buildOaiIdentifier('Publications', row.id),
         datestamp: toDatestamp(row.updated_at),
-        setSpec: getSetSpecFromRow(row, 'publicacion'),
+        setSpec: getSetSpecFromRow(row, 'Publications'),
       });
     }
     remaining -= pubRows.length;
     nextCursor = cursor + pubRows.length;
 
     if (nextCursor >= pubTotal) {
-      nextEntity = 'proyecto';
+      nextEntity = 'Projects';
       nextCursor = 0;
     }
   }
 
-  if ((entity === 'proyecto' || (entity === 'publicacion' && nextEntity === 'proyecto')) && remaining > 0) {
-    const proyCursor = entity === 'proyecto' ? cursor : 0;
+  if ((entity === 'Projects' || (entity === 'Publications' && nextEntity === 'Projects')) && remaining > 0) {
+    const proyCursor = entity === 'Projects' ? cursor : 0;
     const proyRows = await proyRepo.getIdentifiers({ set, from, until, cursor: proyCursor, limit: remaining });
     for (const row of proyRows) {
       headers.push({
-        identifier: buildOaiIdentifier('proyecto', row.id),
+        identifier: buildOaiIdentifier('Projects', row.id),
         datestamp: toDatestamp(row.updated_at),
-        setSpec: getSetSpecFromRow(row, 'proyecto'),
+        setSpec: getSetSpecFromRow(row, 'Projects'),
       });
     }
-    nextEntity = 'proyecto';
+    nextEntity = 'Projects';
     nextCursor = proyCursor + proyRows.length;
   }
 
   if (headers.length === 0) throw noRecordsMatch();
 
-  const globalOffset = (nextEntity === 'publicacion' ? nextCursor : pubTotal + nextCursor);
+  const globalOffset = (nextEntity === 'Publications' ? nextCursor : pubTotal + nextCursor);
   let resumption = null;
 
   if (globalOffset < completeListSize) {
@@ -132,7 +132,7 @@ async function handleMultiEntityIdentifiers(pagination) {
       set: set ?? null,
       from: from ?? null,
       until: until ?? null,
-      metadataPrefix: metadataPrefix ?? 'oai_cerif',
+      metadataPrefix: metadataPrefix ?? 'perucris-cerif',
       _multiEntity: {
         entity: nextEntity,
         cursor: nextCursor,
@@ -141,19 +141,19 @@ async function handleMultiEntityIdentifiers(pagination) {
       },
     });
     resumption = {
-      token,
-      completeListSize,
-      cursor: globalOffset - pageSize < 0 ? 0 : globalOffset - pageSize,
+      "#text": token,
+      "@completeListSize": String(completeListSize),
+      "@cursor": String(globalOffset - pageSize < 0 ? 0 : globalOffset - pageSize),
     };
   } else if (globalOffset >= completeListSize && (pagination.cursor > 0 || pagination._multiEntity)) {
     resumption = {
-      token: '',
-      completeListSize,
-      cursor: globalOffset - headers.length,
+      "#text": '',
+      "@completeListSize": String(completeListSize),
+      "@cursor": String(globalOffset - headers.length),
     };
   }
 
-  const result = { verb: 'ListIdentifiers', headers };
+  const result = { verb: 'ListIdentifiers', header: headers };
   if (resumption) result.resumptionToken = resumption;
   return result;
 }
@@ -168,31 +168,31 @@ function isMultiEntitySet(set) {
 
 /**
  * Determina el tipo de entidad a partir del set.
- * - "publicacion:articulo" -> "publicacion"
- * - "proyecto:PCONFIGI" -> "proyecto"
- * - "patente:invención" -> "patente"
- * - "persona" o "persona:facultad-3" -> "persona"
- * - "orgunit" o "orgunit:facultad" -> "orgunit"
- * - sin set -> "publicacion" (default)
+ * - "publications:articulo" -> "Publications"
+ * - "projects:PCONFIGI" -> "Projects"
+ * - "patents:invención" -> "Patents"
+ * - "persons" o "persons:facultad-3" -> "Persons"
+ * - "orgunits" o "orgunits:facultad" -> "OrgUnits"
+ * - sin set -> "Publications" (default)
  *
  * Note: facultad:* and ocde:* are handled by multi-entity logic, not here.
  */
 function resolveEntityType(set) {
-  if (!set) return 'publicacion';
-  if (set === 'publicacion' || set.startsWith('publicacion:')) return 'publicacion';
-  if (set === 'proyecto' || set.startsWith('proyecto:')) return 'proyecto';
-  if (set === 'patente' || set.startsWith('patente:')) return 'patente';
-  if (set === 'persona' || set.startsWith('persona:')) return 'persona';
-  if (set === 'orgunit' || set.startsWith('orgunit:')) return 'orgunit';
-  return 'publicacion';
+  if (!set) return 'Publications';
+  if (set === 'publications' || set.startsWith('publications:')) return 'Publications';
+  if (set === 'projects' || set.startsWith('projects:')) return 'Projects';
+  if (set === 'patents' || set.startsWith('patents:')) return 'Patents';
+  if (set === 'persons' || set.startsWith('persons:')) return 'Persons';
+  if (set === 'orgunits' || set.startsWith('orgunits:')) return 'OrgUnits';
+  return 'Publications';
 }
 
 function getRepository(entityType) {
   switch (entityType) {
-    case 'proyecto': return proyRepo;
-    case 'patente': return patRepo;
-    case 'persona': return personaRepo;
-    case 'orgunit': return orgunitRepo;
+    case 'Projects': return proyRepo;
+    case 'Patents': return patRepo;
+    case 'Persons': return personaRepo;
+    case 'OrgUnits': return orgunitRepo;
     default: return pubRepo;
   }
 }
@@ -200,24 +200,24 @@ function getRepository(entityType) {
 function getSetSpecFromRow(row, entityType) {
   const specs = [];
   switch (entityType) {
-    case 'publicacion':
-      specs.push(row.tipo_publicacion ? `publicacion:${row.tipo_publicacion}` : 'publicacion');
+    case 'Publications':
+      specs.push(row.tipo_publicacion ? `publications:${row.tipo_publicacion}` : 'publications');
       break;
-    case 'proyecto':
-      specs.push(row.tipo_proyecto ? `proyecto:${row.tipo_proyecto}` : 'proyecto');
+    case 'Projects':
+      specs.push(row.tipo_proyecto ? `projects:${row.tipo_proyecto}` : 'projects');
       if (row.facultad_id) specs.push(`facultad:${row.facultad_id}`);
       if (row.ocde_codigo) specs.push(`ocde:${row.ocde_codigo}`);
       break;
-    case 'patente':
-      specs.push(row.tipo ? `patente:${row.tipo}` : 'patente');
+    case 'Patents':
+      specs.push(row.tipo ? `patents:${row.tipo}` : 'patents');
       break;
-    case 'persona':
-      specs.push('persona');
-      if (row.facultad_id) specs.push(`persona:facultad-${row.facultad_id}`);
+    case 'Persons':
+      specs.push('persons');
+      if (row.facultad_id) specs.push(`persons:facultad-${row.facultad_id}`);
       break;
-    case 'orgunit':
-      specs.push('orgunit');
-      if (row.subtype) specs.push(`orgunit:${row.subtype}`);
+    case 'OrgUnits':
+      specs.push('orgunits');
+      if (row.subtype) specs.push(`orgunits:${row.subtype}`);
       break;
     default:
       specs.push(entityType);

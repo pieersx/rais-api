@@ -15,8 +15,8 @@ import {
 
 /**
  * Servicio para el verbo GetRecord.
- * Soporta 5 entidades: publicacion, proyecto, patente, persona, orgunit.
- * Formato unico: oai_cerif (perfil CERIF PeruCRIS 1.1).
+ * Soporta 5 entidades: Publications, Projects, Patents, Persons, OrgUnits.
+ * Formato unico: perucris-cerif (perfil CERIF PeruCRIS 1.1).
  *
  * @param {object} params - { identifier, metadataPrefix }
  */
@@ -29,62 +29,62 @@ export async function handleGetRecord({ identifier, metadataPrefix }) {
   const { type } = parsed;
 
   switch (type) {
-    case 'publicacion': {
+    case 'Publications': {
       const pub = await pubRepo.findById(parsed.id);
       if (!pub) throw idDoesNotExist(`No record found for identifier "${identifier}"`);
       return {
         verb: 'GetRecord',
         record: {
-          header: buildHeader(pub, 'publicacion'),
+          header: buildHeader(pub, 'Publications'),
           metadata: formatPublicacionCERIF(pub),
         },
       };
     }
 
-    case 'proyecto': {
+    case 'Projects': {
       const proy = await proyRepo.findById(parsed.id);
       if (!proy) throw idDoesNotExist(`No record found for identifier "${identifier}"`);
       return {
         verb: 'GetRecord',
         record: {
-          header: buildHeader(proy, 'proyecto'),
+          header: buildHeader(proy, 'Projects'),
           metadata: formatProyectoCERIF(proy),
         },
       };
     }
 
-    case 'patente': {
+    case 'Patents': {
       const pat = await patRepo.findById(parsed.id);
       if (!pat) throw idDoesNotExist(`No record found for identifier "${identifier}"`);
       return {
         verb: 'GetRecord',
         record: {
-          header: buildHeader(pat, 'patente'),
+          header: buildHeader(pat, 'Patents'),
           metadata: formatPatenteCERIF(pat),
         },
       };
     }
 
-    case 'persona': {
+    case 'Persons': {
       const persona = await personaRepo.findById(parsed.id);
       if (!persona) throw idDoesNotExist(`No record found for identifier "${identifier}"`);
       return {
         verb: 'GetRecord',
         record: {
-          header: buildHeader(persona, 'persona'),
+          header: buildHeader(persona, 'Persons'),
           metadata: formatPersonaCERIF(persona),
         },
       };
     }
 
-    case 'orgunit': {
+    case 'OrgUnits': {
       // parsed.id es compuesto: "facultad-3", "instituto-5", "grupo-10"
       const unit = await orgunitRepo.findById(parsed.id);
       if (!unit) throw idDoesNotExist(`No record found for identifier "${identifier}"`);
       return {
         verb: 'GetRecord',
         record: {
-          header: buildHeader(unit, 'orgunit'),
+          header: buildHeader(unit, 'OrgUnits'),
           metadata: formatOrgUnitCERIF(unit),
         },
       };
@@ -98,8 +98,8 @@ export async function handleGetRecord({ identifier, metadataPrefix }) {
 // ─── Headers ──────────────────────────────────────────────────────────────
 
 function buildHeader(record, type) {
-  const identifier = type === 'orgunit'
-    ? buildOaiIdentifier('orgunit', record.id)
+  const identifier = type === 'OrgUnits'
+    ? buildOaiIdentifier('OrgUnits', record.id)
     : buildOaiIdentifier(type, record.id);
 
   return {
@@ -113,24 +113,24 @@ function getSetSpec(record, type) {
   const specs = [];
 
   switch (type) {
-    case 'publicacion':
-      specs.push(record.tipo_publicacion ? `publicacion:${record.tipo_publicacion}` : 'publicacion');
+    case 'Publications':
+      specs.push(record.tipo_publicacion ? `publications:${record.tipo_publicacion}` : 'publications');
       break;
-    case 'proyecto':
-      specs.push(record.tipo_proyecto ? `proyecto:${record.tipo_proyecto}` : 'proyecto');
+    case 'Projects':
+      specs.push(record.tipo_proyecto ? `projects:${record.tipo_proyecto}` : 'projects');
       if (record.facultad_id) specs.push(`facultad:${record.facultad_id}`);
       if (record.ocde_codigo) specs.push(`ocde:${record.ocde_codigo}`);
       break;
-    case 'patente':
-      specs.push(record.tipo ? `patente:${record.tipo}` : 'patente');
+    case 'Patents':
+      specs.push(record.tipo ? `patents:${record.tipo}` : 'patents');
       break;
-    case 'persona':
-      specs.push('persona');
-      if (record.facultad_id) specs.push(`persona:facultad-${record.facultad_id}`);
+    case 'Persons':
+      specs.push('persons');
+      if (record.facultad_id) specs.push(`persons:facultad-${record.facultad_id}`);
       break;
-    case 'orgunit':
-      specs.push('orgunit');
-      if (record.subtype) specs.push(`orgunit:${record.subtype}`);
+    case 'OrgUnits':
+      specs.push('orgunits');
+      if (record.subtype) specs.push(`orgunits:${record.subtype}`);
       break;
     default:
       specs.push(type);
@@ -145,21 +145,21 @@ function getSetSpec(record, type) {
  * Genera metadata CERIF segun tipo de entidad.
  * Usado por listRecords.service.js y listIdentifiers.service.js
  */
-export function formatMetadata(record, metadataPrefix, entityType = 'publicacion') {
-  if (metadataPrefix !== 'oai_cerif') {
-    throw cannotDisseminateFormat(`Metadata prefix "${metadataPrefix}" is not supported. Use "oai_cerif".`);
+export function formatMetadata(record, metadataPrefix, entityType = 'Publications') {
+  if (metadataPrefix !== 'perucris-cerif') {
+    throw cannotDisseminateFormat(`Metadata prefix "${metadataPrefix}" is not supported. Use "perucris-cerif".`);
   }
 
   switch (entityType) {
-    case 'publicacion':
+    case 'Publications':
       return formatPublicacionCERIF(record);
-    case 'proyecto':
+    case 'Projects':
       return formatProyectoCERIF(record);
-    case 'patente':
+    case 'Patents':
       return formatPatenteCERIF(record);
-    case 'persona':
+    case 'Persons':
       return formatPersonaCERIF(record);
-    case 'orgunit':
+    case 'OrgUnits':
       return formatOrgUnitCERIF(record);
     default:
       throw cannotDisseminateFormat(`Entity type "${entityType}" is not supported`);

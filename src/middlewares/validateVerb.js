@@ -13,7 +13,7 @@ const VALID_VERBS = [
   'GetRecord',
 ];
 
-const VALID_METADATA_PREFIXES = ['oai_cerif'];
+const VALID_METADATA_PREFIXES = ['perucris-cerif'];
 
 /**
  * Schema base: el query param "verb" es obligatorio.
@@ -89,9 +89,14 @@ export function validateVerb(req, res, next) {
   if (!baseParsed.success) {
     const err = badVerb(`Illegal OAI verb. Expected one of: ${VALID_VERBS.join(', ')}`);
     return res.status(200).json({
-      responseDate: new Date().toISOString(),
-      request: { baseURL: process.env.BASE_URL },
-      error: { code: err.oaiCode, message: err.message },
+      "OAI-PMH": {
+        "@xmlns": "http://www.openarchives.org/OAI/2.0/",
+        responseDate: new Date().toISOString(),
+        request: {
+          "#text": process.env.BASE_URL,
+        },
+        error: { "@code": err.oaiCode, "#text": err.message },
+      },
     });
   }
 
@@ -105,9 +110,15 @@ export function validateVerb(req, res, next) {
     const messages = parsed.error.issues.map((i) => i.message).join('; ');
     const err = badArgument(messages);
     return res.status(200).json({
-      responseDate: new Date().toISOString(),
-      request: { verb, baseURL: process.env.BASE_URL },
-      error: { code: err.oaiCode, message: err.message },
+      "OAI-PMH": {
+        "@xmlns": "http://www.openarchives.org/OAI/2.0/",
+        responseDate: new Date().toISOString(),
+        request: {
+          "@verb": verb,
+          "#text": process.env.BASE_URL,
+        },
+        error: { "@code": err.oaiCode, "#text": err.message },
+      },
     });
   }
 

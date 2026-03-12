@@ -7,12 +7,12 @@ import { pool } from '../config/database.js';
 
 /**
  * Servicio para el verbo ListSets.
- * Retorna sets jerarquicos para las 5 entidades:
- *   - publicacion:<tipo>
- *   - proyecto:<tipo>
- *   - patente:<tipo>
- *   - persona / persona:facultad-<id>
- *   - orgunit / orgunit:facultad / orgunit:instituto / orgunit:grupo
+ * Retorna sets jerarquicos para las 5 entidades (formato oficial PerúCRIS en inglés):
+ *   - publications:<tipo>
+ *   - projects:<tipo>
+ *   - patents:<tipo>
+ *   - persons / persons:facultad-<id>
+ *   - orgunits / orgunits:facultad / orgunits:instituto / orgunits:grupo
  *   - facultad:<id>    (cross-entity: publicaciones + proyectos de la facultad)
  *   - ocde:<codigo>    (cross-entity: publicaciones + proyectos del area OCDE)
  */
@@ -33,73 +33,73 @@ export async function handleListSets() {
 
   // ── Sets de publicaciones ──
   sets.push({
-    setSpec: 'publicacion',
-    setName: 'Publicaciones',
+    setSpec: 'publications',
+    setName: 'Publications',
     setDescription: 'Todas las publicaciones de investigacion de RAIS UNMSM',
   });
   for (const tipo of pubSets) {
     sets.push({
-      setSpec: `publicacion:${tipo}`,
-      setName: `Publicaciones - ${capitalize(tipo)}`,
+      setSpec: `publications:${tipo}`,
+      setName: `Publications - ${capitalize(tipo)}`,
     });
   }
 
   // ── Sets de proyectos ──
   sets.push({
-    setSpec: 'proyecto',
-    setName: 'Proyectos de Investigacion',
+    setSpec: 'projects',
+    setName: 'Research Projects',
     setDescription: 'Todos los proyectos de investigacion de RAIS UNMSM',
   });
   for (const tipo of proySets) {
     sets.push({
-      setSpec: `proyecto:${tipo}`,
-      setName: `Proyectos - ${getProyectoTipoNombre(tipo)}`,
+      setSpec: `projects:${tipo}`,
+      setName: `Projects - ${getProyectoTipoNombre(tipo)}`,
     });
   }
 
   // ── Sets de patentes ──
   sets.push({
-    setSpec: 'patente',
-    setName: 'Patentes y Propiedad Intelectual',
+    setSpec: 'patents',
+    setName: 'Patents and Intellectual Property',
     setDescription: 'Patentes y registros de propiedad intelectual',
   });
   for (const tipo of patSets) {
     sets.push({
-      setSpec: `patente:${tipo}`,
-      setName: `Patentes - ${capitalize(tipo)}`,
+      setSpec: `patents:${tipo}`,
+      setName: `Patents - ${capitalize(tipo)}`,
     });
   }
 
   // ── Sets de personas ──
   sets.push({
-    setSpec: 'persona',
-    setName: 'Personas (Investigadores)',
+    setSpec: 'persons',
+    setName: 'Persons (Researchers)',
     setDescription: 'Investigadores y personal academico de la UNMSM',
   });
   for (const row of personaSets) {
     sets.push({
-      setSpec: `persona:facultad-${row.facultad_id}`,
-      setName: `Personas - ${row.facultad_nombre}`,
+      setSpec: `persons:facultad-${row.facultad_id}`,
+      setName: `Persons - ${row.facultad_nombre}`,
     });
   }
 
   // ── Sets de unidades organizativas ──
   sets.push({
-    setSpec: 'orgunit',
-    setName: 'Unidades Organizativas',
+    setSpec: 'orgunits',
+    setName: 'Organizational Units',
     setDescription: 'Facultades, institutos y grupos de investigacion de la UNMSM',
   });
   sets.push({
-    setSpec: 'orgunit:facultad',
-    setName: 'Unidades Organizativas - Facultades',
+    setSpec: 'orgunits:facultad',
+    setName: 'Organizational Units - Faculties',
   });
   sets.push({
-    setSpec: 'orgunit:instituto',
-    setName: 'Unidades Organizativas - Institutos',
+    setSpec: 'orgunits:instituto',
+    setName: 'Organizational Units - Institutes',
   });
   sets.push({
-    setSpec: 'orgunit:grupo',
-    setName: 'Unidades Organizativas - Grupos de Investigacion',
+    setSpec: 'orgunits:grupo',
+    setName: 'Organizational Units - Research Groups',
   });
 
   // ── Sets por facultad (cross-entity) ──
@@ -120,7 +120,7 @@ export async function handleListSets() {
 
   return {
     verb: 'ListSets',
-    sets,
+    set: sets,
   };
 }
 

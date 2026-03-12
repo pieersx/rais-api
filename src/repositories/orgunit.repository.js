@@ -152,25 +152,25 @@ export async function findById(compoundId) {
 
 /**
  * Cuenta todas las unidades organizativas.
- * Filtra por set si se proporciona: orgunit, orgunit:facultad, orgunit:instituto, orgunit:grupo
+ * Filtra por set si se proporciona: orgunits, orgunits:facultad, orgunits:instituto, orgunits:grupo
  */
 export async function countAll(filters = {}) {
   const { set } = filters;
 
-  if (set === 'orgunit:facultad') {
+  if (set === 'orgunits:facultad') {
     const [rows] = await pool.query('SELECT COUNT(*) AS total FROM Facultad');
     return rows[0].total;
   }
-  if (set === 'orgunit:instituto') {
+  if (set === 'orgunits:instituto') {
     const [rows] = await pool.query('SELECT COUNT(*) AS total FROM Instituto WHERE estado >= 1');
     return rows[0].total;
   }
-  if (set === 'orgunit:grupo') {
+  if (set === 'orgunits:grupo') {
     const [rows] = await pool.query('SELECT COUNT(*) AS total FROM Grupo WHERE estado >= 1');
     return rows[0].total;
   }
 
-  // orgunit (parent) o sin set — todas las unidades
+  // orgunits (parent) o sin set — todas las unidades
   const [facCount, instCount, grpCount] = await Promise.all([
     pool.query('SELECT COUNT(*) AS total FROM Facultad'),
     pool.query('SELECT COUNT(*) AS total FROM Instituto WHERE estado >= 1'),
@@ -187,7 +187,7 @@ export async function countAll(filters = {}) {
 export async function getIdentifiers({ set, from, until, cursor = 0, limit = 100 } = {}) {
   const rows = [];
 
-  if (!set || set === 'orgunit' || set === 'orgunit:facultad') {
+  if (!set || set === 'orgunits' || set === 'orgunits:facultad') {
     const [facs] = await pool.query(
       `SELECT id, 'facultad' AS subtype, NULL AS updated_at
        FROM Facultad
@@ -198,7 +198,7 @@ export async function getIdentifiers({ set, from, until, cursor = 0, limit = 100
     }
   }
 
-  if (!set || set === 'orgunit' || set === 'orgunit:instituto') {
+  if (!set || set === 'orgunits' || set === 'orgunits:instituto') {
     const [insts] = await pool.query(
       `SELECT id, 'instituto' AS subtype, NULL AS updated_at
        FROM Instituto
@@ -210,7 +210,7 @@ export async function getIdentifiers({ set, from, until, cursor = 0, limit = 100
     }
   }
 
-  if (!set || set === 'orgunit' || set === 'orgunit:grupo') {
+  if (!set || set === 'orgunits' || set === 'orgunits:grupo') {
     const [grps] = await pool.query(
       `SELECT id, 'grupo' AS subtype, updated_at
        FROM Grupo
@@ -246,7 +246,7 @@ export async function findAll({ set, from, until, cursor = 0, limit = 100 } = {}
 }
 
 /**
- * Sets disponibles para orgunit.
+ * Sets disponibles para orgunits.
  */
 export async function getDistinctSets() {
   return ['facultad', 'instituto', 'grupo'];

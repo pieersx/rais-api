@@ -16,11 +16,11 @@ function buildWhereClause(filters = {}) {
   const params = [];
 
   if (filters.set) {
-    if (filters.set.startsWith('proyecto:')) {
-      const setVal = filters.set.replace('proyecto:', '');
+    if (filters.set.startsWith('projects:')) {
+      const setVal = filters.set.replace('projects:', '');
       conditions.push('p.tipo_proyecto = ?');
       params.push(setVal);
-    } else if (filters.set === 'proyecto') {
+    } else if (filters.set === 'projects') {
       // Parent set: todos los proyectos (sin filtro de tipo)
     } else if (filters.set.startsWith('facultad:')) {
       const facId = Number(filters.set.replace('facultad:', ''));

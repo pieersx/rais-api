@@ -59,9 +59,9 @@ export function buildResumptionToken({ cursor, pageSize, completeListSize, set, 
     // Solo incluir resumptionToken si hubo paginacion (cursor > 0)
     if (cursor > 0) {
       return {
-        token: '',
-        completeListSize,
-        cursor,
+        "#text": '',
+        "@completeListSize": String(completeListSize),
+        "@cursor": String(cursor),
       };
     }
     return null;
@@ -73,13 +73,13 @@ export function buildResumptionToken({ cursor, pageSize, completeListSize, set, 
     set: set ?? null,
     from: from ?? null,
     until: until ?? null,
-    metadataPrefix: metadataPrefix ?? 'oai_cerif',
+    metadataPrefix: metadataPrefix ?? 'perucris-cerif',
   });
 
   return {
-    token,
-    completeListSize,
-    cursor,
+    "#text": token,
+    "@completeListSize": String(completeListSize),
+    "@cursor": String(cursor),
   };
 }
 
@@ -102,7 +102,7 @@ export function extractPaginationParams(oaiParams) {
       set: decoded.set,
       from: decoded.from,
       until: decoded.until,
-      metadataPrefix: decoded.metadataPrefix ?? 'oai_cerif',
+      metadataPrefix: decoded.metadataPrefix ?? 'perucris-cerif',
       pageSize,
       _multiEntity: decoded._multiEntity ?? null,
     };
@@ -113,7 +113,7 @@ export function extractPaginationParams(oaiParams) {
     set: oaiParams.set ?? null,
     from: oaiParams.from ?? null,
     until: oaiParams.until ?? null,
-    metadataPrefix: oaiParams.metadataPrefix ?? 'oai_cerif',
+    metadataPrefix: oaiParams.metadataPrefix ?? 'perucris-cerif',
     pageSize,
     _multiEntity: null,
   };

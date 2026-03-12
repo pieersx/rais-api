@@ -8,10 +8,10 @@ import { resolveEntityType, getRepository, isMultiEntitySet } from './listIdenti
 
 /**
  * Servicio para el verbo ListRecords.
- * Soporta 5 entidades: publicacion, proyecto, patente, persona, orgunit.
+ * Soporta 5 entidades: Publications, Projects, Patents, Persons, OrgUnits.
  *
  * Para sets multi-entidad (facultad:*, ocde:*), combina registros
- * de publicaciones y proyectos en secuencia.
+ * de Publications y Projects en secuencia.
  */
 export async function handleListRecords(oaiParams) {
   const pagination = extractPaginationParams(oaiParams);
@@ -44,19 +44,19 @@ export async function handleListRecords(oaiParams) {
     cursor, pageSize, completeListSize, set, from, until, metadataPrefix,
   });
 
-  const result = { verb: 'ListRecords', records: formattedRecords };
+  const result = { verb: 'ListRecords', record: formattedRecords };
   if (resumption) result.resumptionToken = resumption;
   return result;
 }
 
 /**
  * Handles ListRecords for multi-entity sets (facultad:*, ocde:*).
- * Returns publicaciones first, then proyectos, using a composite cursor.
+ * Returns Publications first, then Projects, using a composite cursor.
  */
 async function handleMultiEntityRecords(pagination) {
   const { set, from, until, metadataPrefix, pageSize } = pagination;
 
-  let entity = 'publicacion';
+  let entity = 'Publications';
   let cursor = 0;
   let pubTotal = null;
   let proyTotal = null;
@@ -83,39 +83,39 @@ async function handleMultiEntityRecords(pagination) {
   let nextEntity = entity;
   let nextCursor = cursor;
 
-  if (entity === 'publicacion' && remaining > 0 && cursor < pubTotal) {
+  if (entity === 'Publications' && remaining > 0 && cursor < pubTotal) {
     const pubs = await pubRepo.findAll({ set, from, until, cursor, limit: remaining });
     for (const record of pubs) {
       formattedRecords.push({
-        header: buildHeader(record, 'publicacion'),
-        metadata: formatMetadata(record, metadataPrefix, 'publicacion'),
+        header: buildHeader(record, 'Publications'),
+        metadata: formatMetadata(record, metadataPrefix, 'Publications'),
       });
     }
     remaining -= pubs.length;
     nextCursor = cursor + pubs.length;
 
     if (nextCursor >= pubTotal) {
-      nextEntity = 'proyecto';
+      nextEntity = 'Projects';
       nextCursor = 0;
     }
   }
 
-  if ((entity === 'proyecto' || (entity === 'publicacion' && nextEntity === 'proyecto')) && remaining > 0) {
-    const proyCursor = entity === 'proyecto' ? cursor : 0;
+  if ((entity === 'Projects' || (entity === 'Publications' && nextEntity === 'Projects')) && remaining > 0) {
+    const proyCursor = entity === 'Projects' ? cursor : 0;
     const proys = await proyRepo.findAll({ set, from, until, cursor: proyCursor, limit: remaining });
     for (const record of proys) {
       formattedRecords.push({
-        header: buildHeader(record, 'proyecto'),
-        metadata: formatMetadata(record, metadataPrefix, 'proyecto'),
+        header: buildHeader(record, 'Projects'),
+        metadata: formatMetadata(record, metadataPrefix, 'Projects'),
       });
     }
-    nextEntity = 'proyecto';
+    nextEntity = 'Projects';
     nextCursor = proyCursor + proys.length;
   }
 
   if (formattedRecords.length === 0) throw noRecordsMatch();
 
-  const globalOffset = (nextEntity === 'publicacion' ? nextCursor : pubTotal + nextCursor);
+  const globalOffset = (nextEntity === 'Publications' ? nextCursor : pubTotal + nextCursor);
   let resumption = null;
 
   if (globalOffset < completeListSize) {
@@ -124,7 +124,7 @@ async function handleMultiEntityRecords(pagination) {
       set: set ?? null,
       from: from ?? null,
       until: until ?? null,
-      metadataPrefix: metadataPrefix ?? 'oai_cerif',
+      metadataPrefix: metadataPrefix ?? 'perucris-cerif',
       _multiEntity: {
         entity: nextEntity,
         cursor: nextCursor,
@@ -133,19 +133,19 @@ async function handleMultiEntityRecords(pagination) {
       },
     });
     resumption = {
-      token,
-      completeListSize,
-      cursor: globalOffset - pageSize < 0 ? 0 : globalOffset - pageSize,
+      "#text": token,
+      "@completeListSize": String(completeListSize),
+      "@cursor": String(globalOffset - pageSize < 0 ? 0 : globalOffset - pageSize),
     };
   } else if (globalOffset >= completeListSize && (pagination.cursor > 0 || pagination._multiEntity)) {
     resumption = {
-      token: '',
-      completeListSize,
-      cursor: globalOffset - formattedRecords.length,
+      "#text": '',
+      "@completeListSize": String(completeListSize),
+      "@cursor": String(globalOffset - formattedRecords.length),
     };
   }
 
-  const result = { verb: 'ListRecords', records: formattedRecords };
+  const result = { verb: 'ListRecords', record: formattedRecords };
   if (resumption) result.resumptionToken = resumption;
   return result;
 }

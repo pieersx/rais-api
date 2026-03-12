@@ -45,39 +45,39 @@ export async function handleIdentify() {
     protocolVersion: '2.0',
     adminEmail: process.env.ADMIN_EMAIL ?? 'rais@unmsm.edu.pe',
     earliestDatestamp: earliest,
-    deletedRecord: 'no',
+    deletedRecord: 'persistent',
     granularity: 'YYYY-MM-DDThh:mm:ssZ',
-    metadataPrefix: 'oai_cerif',
+    metadataPrefix: 'perucris-cerif',
     description: {
       oaiIdentifier: {
         scheme: 'oai',
-        repositoryIdentifier: 'rais.unmsm.edu.pe',
+        repositoryIdentifier: 'cris.unmsm.edu.pe',
         delimiter: ':',
-        sampleIdentifier: 'oai:rais.unmsm.edu.pe:publicacion/2',
+        sampleIdentifier: 'oai:cris.unmsm.edu.pe:Publications/2',
       },
       entityTypes: [
         {
-          type: 'publicacion',
+          type: 'Publications',
           count: pubCount,
           description: 'Publicaciones de investigacion (articulos, tesis, libros, etc.)',
         },
         {
-          type: 'proyecto',
+          type: 'Projects',
           count: proyCount,
           description: 'Proyectos de investigacion financiados y no financiados',
         },
         {
-          type: 'patente',
+          type: 'Patents',
           count: patCount,
           description: 'Patentes y registros de propiedad intelectual',
         },
         {
-          type: 'persona',
+          type: 'Persons',
           count: personaCount,
           description: 'Investigadores y personal academico de la UNMSM',
         },
         {
-          type: 'orgunit',
+          type: 'OrgUnits',
           count: orgunitCount,
           description: 'Unidades organizativas: facultades, institutos y grupos de investigacion',
         },
@@ -90,8 +90,8 @@ export async function handleIdentify() {
       },
       compliance: {
         profile: 'PeruCRIS 1.1',
-        metadataFormat: 'oai_cerif',
-        schema: 'https://raw.githubusercontent.com/concytec-pe/Peru-CRIS/main/directrices/schemas/perucris-cerif-profile.xsd',
+        metadataFormat: 'perucris-cerif',
+        schema: 'https://purl.org/pe-repo/perucris/cerif.xsd',
       },
     },
   };

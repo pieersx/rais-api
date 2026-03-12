@@ -22,19 +22,19 @@ GET {{baseUrl}}?verb=Identify
 GET {{baseUrl}}?verb=ListMetadataFormats
 
 ### ListMetadataFormats - Formatos para una publicación específica
-GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:rais.unmsm.edu.pe:publicacion/34
+GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:cris.unmsm.edu.pe:Publications/34
 
 ### ListMetadataFormats - Formatos para un proyecto específico
-GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:rais.unmsm.edu.pe:proyecto/1
+GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:cris.unmsm.edu.pe:Projects/1
 
 ### ListMetadataFormats - Formatos para una patente específica
-GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:rais.unmsm.edu.pe:patente/5
+GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:cris.unmsm.edu.pe:Patents/5
 
 ### ListMetadataFormats - Formatos para una persona específica
-GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:rais.unmsm.edu.pe:persona/100
+GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:cris.unmsm.edu.pe:Persons/100
 
 ### ListMetadataFormats - Formatos para una facultad específica
-GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:rais.unmsm.edu.pe:orgunit/facultad/1
+GET {{baseUrl}}?verb=ListMetadataFormats&identifier=oai:cris.unmsm.edu.pe:OrgUnits/facultad-1
 
 
 ### ============================================================
@@ -54,178 +54,178 @@ GET {{baseUrl}}?verb=ListSets
 ### ---- PUBLICACIONES (59,543) ----
 
 ### ListIdentifiers - Todas las publicaciones
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=publications
 
 ### ListIdentifiers - Artículos solamente
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:articulo
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=publications:articulo
 
 ### ListIdentifiers - Artículos del 2024
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:articulo&from=2024-01-01&until=2024-12-31
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=publications:articulo&from=2024-01-01&until=2024-12-31
 
 ### ListIdentifiers - Libros
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:libro
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=publications:libro
 
 ### ListIdentifiers - Capítulos de libro
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:capitulo
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=publications:capitulo
 
 ### ListIdentifiers - Tesis
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:tesis
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=publications:tesis
 
 ### ListIdentifiers - Tesis de asesoría
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:tesis-asesoria
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=publications:tesis-asesoria
 
 ### ListIdentifiers - Ensayos
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:ensayo
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=publications:ensayo
 
 ### ListIdentifiers - Ponencias y eventos
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion:evento
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=publications:evento
 
 ### ListIdentifiers - Publicaciones desde enero 2023
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=publicacion&from=2023-01-01
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=publications&from=2023-01-01
 
 ### ---- PROYECTOS (6,690) ----
 
 ### ListIdentifiers - Todos los proyectos
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=projects
 
 ### ListIdentifiers - Proyectos con financiamiento (PCONFIGI)
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PCONFIGI
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=projects:PCONFIGI
 
 ### ListIdentifiers - Proyectos sin financiamiento (Investigación)
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PSINFINV
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=projects:PSINFINV
 
 ### ListIdentifiers - Proyectos sin financiamiento (Publicación)
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PSINFIPU
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=projects:PSINFIPU
 
 ### ListIdentifiers - Tesis Pregrado
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PTPGRADO
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=projects:PTPGRADO
 
 ### ListIdentifiers - Tesis Maestría
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PTPMAEST
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=projects:PTPMAEST
 
 ### ListIdentifiers - Tesis Doctorado
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PTPDOCTO
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=projects:PTPDOCTO
 
 ### ListIdentifiers - Tesis Bachiller
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PTPBACHILLER
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=projects:PTPBACHILLER
 
 ### ListIdentifiers - Eventos Académicos
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PEVENTO
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=projects:PEVENTO
 
 ### ListIdentifiers - Proyectos Multidisciplinarios
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PMULTI
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=projects:PMULTI
 
 ### ListIdentifiers - Proyectos Interdisciplinarios
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=proyecto:PINTERDIS
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=projects:PINTERDIS
 
 ### ---- PATENTES (406) ----
 
 ### ListIdentifiers - Todas las patentes
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=patente
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=patents
 
 ### ListIdentifiers - Patentes de invención
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=patente:Patente de invencion
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=patents:Patente de invencion
 
 ### ListIdentifiers - Modelos de utilidad
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=patente:Modelo de utilidad
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=patents:Modelo de utilidad
 
 ### ListIdentifiers - Registros de software
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=patente:Registro de software
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=patents:Registro de software
 
 ### ListIdentifiers - Certificados de obtentor
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=patente:Certificado de obtentor
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=patents:Certificado de obtentor
 
 ### ---- PERSONAS (36,455) ----
 
 ### ListIdentifiers - Todos los investigadores
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=persona
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=persons
 
 ### ---- UNIDADES ORGANIZATIVAS (492) ----
 
 ### ListIdentifiers - Todas las unidades organizativas
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=orgunit
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=orgunits
 
 ### ---- POR FACULTAD (multi-entidad: publicaciones + proyectos) ----
 
 ### ListIdentifiers - Facultad de Medicina
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:1
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:1
 
 ### ListIdentifiers - Facultad de Derecho
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:2
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:2
 
 ### ListIdentifiers - Facultad de Letras y Ciencias Humanas
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:3
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:3
 
 ### ListIdentifiers - Facultad de Farmacia y Bioquímica
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:4
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:4
 
 ### ListIdentifiers - Facultad de Odontología
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:5
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:5
 
 ### ListIdentifiers - Facultad de Educación
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:6
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:6
 
 ### ListIdentifiers - Facultad de Química e Ingeniería Química
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:7
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:7
 
 ### ListIdentifiers - Facultad de Medicina Veterinaria
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:8
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:8
 
 ### ListIdentifiers - Facultad de Ciencias Administrativas
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:9
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:9
 
 ### ListIdentifiers - Facultad de Ciencias Biológicas
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:10
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:10
 
 ### ListIdentifiers - Facultad de Ciencias Contables
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:11
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:11
 
 ### ListIdentifiers - Facultad de Ciencias Económicas
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:12
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:12
 
 ### ListIdentifiers - Facultad de Ciencias Físicas
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:13
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:13
 
 ### ListIdentifiers - Facultad de Ciencias Matemáticas
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:14
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:14
 
 ### ListIdentifiers - Facultad de Ciencias Sociales
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:15
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:15
 
 ### ListIdentifiers - Facultad de Ingeniería Geológica, Minera, Metalúrgica y Geográfica
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:16
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:16
 
 ### ListIdentifiers - Facultad de Ingeniería Industrial
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:17
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:17
 
 ### ListIdentifiers - Facultad de Psicología
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:18
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:18
 
 ### ListIdentifiers - Facultad de Ingeniería Electrónica y Eléctrica
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:19
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:19
 
 ### ListIdentifiers - Facultad de Ingeniería de Sistemas e Informática
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=facultad:20
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=facultad:20
 
 ### ---- POR ÁREA OCDE (multi-entidad: publicaciones + proyectos) ----
 
 ### ListIdentifiers - Área OCDE: Ciencias Naturales
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=ocde:1
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=ocde:1
 
 ### ListIdentifiers - Área OCDE: Ingeniería y Tecnología
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=ocde:2
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=ocde:2
 
 ### ListIdentifiers - Área OCDE: Ciencias Médicas y de Salud
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=ocde:3
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=ocde:3
 
 ### ListIdentifiers - Área OCDE: Ciencias Agrícolas
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=ocde:4
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=ocde:4
 
 ### ListIdentifiers - Área OCDE: Ciencias Sociales
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=ocde:5
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=ocde:5
 
 ### ListIdentifiers - Área OCDE: Humanidades
-GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=oai_cerif&set=ocde:6
+GET {{baseUrl}}?verb=ListIdentifiers&metadataPrefix=perucris-cerif&set=ocde:6
 
 ### ---- PAGINACIÓN CON RESUMPTION TOKEN ----
 
@@ -242,193 +242,193 @@ GET {{baseUrl}}?verb=ListIdentifiers&resumptionToken=eyJjdXJzb3IiOjEwMCwi
 ### ---- PUBLICACIONES (59,543) ----
 
 ### ListRecords - Todas las publicaciones
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=publications
 
 ### ListRecords - Artículos solamente
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:articulo
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=publications:articulo
 
 ### ListRecords - Artículos del 2024
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:articulo&from=2024-01-01&until=2024-12-31
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=publications:articulo&from=2024-01-01&until=2024-12-31
 
 ### ListRecords - Artículos del 2023
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:articulo&from=2023-01-01&until=2023-12-31
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=publications:articulo&from=2023-01-01&until=2023-12-31
 
 ### ListRecords - Libros
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:libro
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=publications:libro
 
 ### ListRecords - Capítulos de libro
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:capitulo
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=publications:capitulo
 
 ### ListRecords - Tesis
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:tesis
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=publications:tesis
 
 ### ListRecords - Ensayos
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:ensayo
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=publications:ensayo
 
 ### ListRecords - Ponencias y eventos
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion:evento
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=publications:evento
 
 ### ListRecords - Publicaciones desde 2020
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion&from=2020-01-01
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=publications&from=2020-01-01
 
 ### ListRecords - Publicaciones entre 2022-2024
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion&from=2022-01-01&until=2024-12-31
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=publications&from=2022-01-01&until=2024-12-31
 
 ### ---- PROYECTOS (6,690) ----
 
 ### ListRecords - Todos los proyectos
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=projects
 
 ### ListRecords - Proyectos con financiamiento (PCONFIGI)
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PCONFIGI
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=projects:PCONFIGI
 
 ### ListRecords - Proyectos sin financiamiento (Investigación)
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PSINFINV
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=projects:PSINFINV
 
 ### ListRecords - Proyectos sin financiamiento (Publicación)
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PSINFIPU
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=projects:PSINFIPU
 
 ### ListRecords - Tesis Pregrado
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PTPGRADO
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=projects:PTPGRADO
 
 ### ListRecords - Tesis Maestría
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PTPMAEST
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=projects:PTPMAEST
 
 ### ListRecords - Tesis Doctorado
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PTPDOCTO
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=projects:PTPDOCTO
 
 ### ListRecords - Tesis Bachiller
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PTPBACHILLER
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=projects:PTPBACHILLER
 
 ### ListRecords - Eventos Académicos
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PEVENTO
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=projects:PEVENTO
 
 ### ListRecords - Proyectos Multidisciplinarios
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PMULTI
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=projects:PMULTI
 
 ### ListRecords - Proyectos Interdisciplinarios
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:PINTERDIS
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=projects:PINTERDIS
 
 ### ListRecords - Spin-Off
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=proyecto:SPINOFF
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=projects:SPINOFF
 
 ### ---- PATENTES (406) ----
 
 ### ListRecords - Todas las patentes
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=patente
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=patents
 
 ### ListRecords - Patentes de invención
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=patente:Patente de invencion
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=patents:Patente de invencion
 
 ### ListRecords - Modelos de utilidad
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=patente:Modelo de utilidad
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=patents:Modelo de utilidad
 
 ### ListRecords - Registros de software
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=patente:Registro de software
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=patents:Registro de software
 
 ### ListRecords - Certificados de obtentor
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=patente:Certificado de obtentor
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=patents:Certificado de obtentor
 
 ### ListRecords - Otros registros
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=patente:Otros
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=patents:Otros
 
 ### ---- PERSONAS (36,455) ----
 
 ### ListRecords - Todos los investigadores
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=persona
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=persons
 
 ### ---- UNIDADES ORGANIZATIVAS (492) ----
 
 ### ListRecords - Todas las unidades organizativas
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=orgunit
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=orgunits
 
 ### ---- POR FACULTAD (multi-entidad: publicaciones + proyectos) ----
 
 ### ListRecords - Facultad de Medicina (publicaciones + proyectos)
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:1
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:1
 
 ### ListRecords - Facultad de Medicina desde 2023
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:1&from=2023-01-01
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:1&from=2023-01-01
 
 ### ListRecords - Facultad de Derecho
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:2
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:2
 
 ### ListRecords - Facultad de Letras y Ciencias Humanas
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:3
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:3
 
 ### ListRecords - Facultad de Farmacia y Bioquímica
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:4
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:4
 
 ### ListRecords - Facultad de Odontología
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:5
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:5
 
 ### ListRecords - Facultad de Educación
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:6
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:6
 
 ### ListRecords - Facultad de Química e Ingeniería Química
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:7
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:7
 
 ### ListRecords - Facultad de Medicina Veterinaria
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:8
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:8
 
 ### ListRecords - Facultad de Ciencias Administrativas
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:9
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:9
 
 ### ListRecords - Facultad de Ciencias Biológicas
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:10
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:10
 
 ### ListRecords - Facultad de Ciencias Contables
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:11
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:11
 
 ### ListRecords - Facultad de Ciencias Económicas
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:12
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:12
 
 ### ListRecords - Facultad de Ciencias Físicas
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:13
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:13
 
 ### ListRecords - Facultad de Ciencias Matemáticas
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:14
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:14
 
 ### ListRecords - Facultad de Ciencias Sociales
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:15
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:15
 
 ### ListRecords - Facultad de Ingeniería Geológica, Minera, Metalúrgica y Geográfica
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:16
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:16
 
 ### ListRecords - Facultad de Ingeniería Industrial
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:17
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:17
 
 ### ListRecords - Facultad de Psicología
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:18
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:18
 
 ### ListRecords - Facultad de Ingeniería Electrónica y Eléctrica
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:19
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:19
 
 ### ListRecords - Facultad de Ingeniería de Sistemas e Informática
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=facultad:20
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=facultad:20
 
 ### ---- POR ÁREA OCDE (multi-entidad: publicaciones + proyectos) ----
 
 ### ListRecords - Área OCDE: Ciencias Naturales
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:1
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=ocde:1
 
 ### ListRecords - Área OCDE: Ingeniería y Tecnología
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:2
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=ocde:2
 
 ### ListRecords - Área OCDE: Ciencias Médicas y de Salud
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:3
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=ocde:3
 
 ### ListRecords - Área OCDE: Ciencias Médicas desde 2023
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:3&from=2023-01-01
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=ocde:3&from=2023-01-01
 
 ### ListRecords - Área OCDE: Ciencias Agrícolas
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:4
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=ocde:4
 
 ### ListRecords - Área OCDE: Ciencias Sociales
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:5
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=ocde:5
 
 ### ListRecords - Área OCDE: Humanidades
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=ocde:6
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=ocde:6
 
 ### ---- PAGINACIÓN CON RESUMPTION TOKEN ----
 
@@ -445,82 +445,82 @@ GET {{baseUrl}}?verb=ListRecords&resumptionToken=eyJjdXJzb3IiOjEwMCwi
 ### ---- PUBLICACIONES ----
 
 ### GetRecord - Publicación específica (#34)
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/34&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:Publications/34&metadataPrefix=perucris-cerif
 
 ### GetRecord - Publicación #2
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/2&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:Publications/2&metadataPrefix=perucris-cerif
 
 ### GetRecord - Publicación #100
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/100&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:Publications/100&metadataPrefix=perucris-cerif
 
 ### ---- PROYECTOS ----
 
 ### GetRecord - Proyecto específico (#1)
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:proyecto/1&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:Projects/1&metadataPrefix=perucris-cerif
 
 ### GetRecord - Proyecto #10
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:proyecto/10&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:Projects/10&metadataPrefix=perucris-cerif
 
 ### GetRecord - Proyecto #100
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:proyecto/100&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:Projects/100&metadataPrefix=perucris-cerif
 
 ### ---- PATENTES ----
 
 ### GetRecord - Patente específica (#5)
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:patente/5&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:Patents/5&metadataPrefix=perucris-cerif
 
 ### GetRecord - Patente #1
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:patente/1&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:Patents/1&metadataPrefix=perucris-cerif
 
 ### GetRecord - Patente #50
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:patente/50&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:Patents/50&metadataPrefix=perucris-cerif
 
 ### ---- PERSONAS ----
 
 ### GetRecord - Persona específica (#100)
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:persona/100&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:Persons/100&metadataPrefix=perucris-cerif
 
 ### GetRecord - Persona #1
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:persona/1&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:Persons/1&metadataPrefix=perucris-cerif
 
 ### GetRecord - Persona #1000
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:persona/1000&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:Persons/1000&metadataPrefix=perucris-cerif
 
 ### ---- UNIDADES ORGANIZATIVAS: FACULTADES ----
 
 ### GetRecord - Facultad específica (#1 = Facultad de Medicina)
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/facultad/1&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:OrgUnits/facultad-1&metadataPrefix=perucris-cerif
 
 ### GetRecord - Facultad #2
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/facultad/2&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:OrgUnits/facultad-2&metadataPrefix=perucris-cerif
 
 ### GetRecord - Facultad #10
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/facultad/10&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:OrgUnits/facultad-10&metadataPrefix=perucris-cerif
 
 ### GetRecord - Facultad #20
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/facultad/20&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:OrgUnits/facultad-20&metadataPrefix=perucris-cerif
 
 ### ---- UNIDADES ORGANIZATIVAS: INSTITUTOS ----
 
 ### GetRecord - Instituto específico (#102)
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/instituto/102&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:OrgUnits/instituto-102&metadataPrefix=perucris-cerif
 
 ### GetRecord - Instituto #1
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/instituto/1&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:OrgUnits/instituto-1&metadataPrefix=perucris-cerif
 
 ### GetRecord - Instituto #50
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/instituto/50&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:OrgUnits/instituto-50&metadataPrefix=perucris-cerif
 
 ### ---- UNIDADES ORGANIZATIVAS: GRUPOS DE INVESTIGACIÓN ----
 
 ### GetRecord - Grupo de Investigación específico (#24)
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/grupo/24&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:OrgUnits/grupo-24&metadataPrefix=perucris-cerif
 
 ### GetRecord - Grupo #1
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/grupo/1&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:OrgUnits/grupo-1&metadataPrefix=perucris-cerif
 
 ### GetRecord - Grupo #100
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/grupo/100&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:OrgUnits/grupo-100&metadataPrefix=perucris-cerif
 
 
 ### ============================================================
@@ -531,19 +531,19 @@ GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:orgunit/grupo/10
 GET {{baseUrl}}?verb=InvalidVerb
 
 ### Error: Parámetro faltante (GetRecord sin identifier)
-GET {{baseUrl}}?verb=GetRecord&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&metadataPrefix=perucris-cerif
 
 ### Error: Formato de metadatos no soportado
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=marc21&set=publicacion
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=marc21&set=publications
 
 ### Error: Identificador no encontrado
-GET {{baseUrl}}?verb=GetRecord&identifier=oai:rais.unmsm.edu.pe:publicacion/999999999&metadataPrefix=oai_cerif
+GET {{baseUrl}}?verb=GetRecord&identifier=oai:cris.unmsm.edu.pe:Publications/999999999&metadataPrefix=perucris-cerif
 
 ### Error: Set no encontrado o vacío
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=nonexistent
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=nonexistent
 
 ### Error: Rango de fechas sin resultados
-GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion&from=1900-01-01&until=1950-12-31
+GET {{baseUrl}}?verb=ListRecords&metadataPrefix=perucris-cerif&set=publications&from=1900-01-01&until=1950-12-31
 
 
 ### ============================================================
@@ -559,7 +559,7 @@ GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion&from=1
 ### - GetRecord        → Registro individual específico
 
 ### Formatos de metadatos:
-### - oai_cerif        → CERIF JSON (PerúCRIS 1.1 compliant)
+### - perucris-cerif   → CERIF JSON (PerúCRIS 1.1 compliant)
 
 ### Parámetros principales:
 ### - verb             → Verbo OAI-PMH (requerido)
@@ -571,11 +571,11 @@ GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion&from=1
 ### - resumptionToken  → Token de paginación (excluye otros parámetros)
 
 ### Entidades principales:
-### 1. Publicaciones (59,543) - publicacion, publicacion:articulo, publicacion:libro, etc.
-### 2. Proyectos (6,690)     - proyecto, proyecto:PCONFIGI, proyecto:PTPGRADO, etc.
-### 3. Patentes (406)        - patente, patente:Patente de invencion, etc.
-### 4. Personas (36,455)     - persona
-### 5. Unidades Org (492)    - orgunit, facultad:*, instituto, grupo
+### 1. Publicaciones (59,543) - publications, publications:articulo, publications:libro, etc.
+### 2. Proyectos (6,690)     - projects, projects:PCONFIGI, projects:PTPGRADO, etc.
+### 3. Patentes (406)        - patents, patents:Patente de invencion, etc.
+### 4. Personas (36,455)     - persons
+### 5. Unidades Org (504)    - orgunits, facultad:*, instituto, grupo
 
 ### Paginación:
 ### - Tamaño por página: 100 registros (configurable)
@@ -583,10 +583,10 @@ GET {{baseUrl}}?verb=ListRecords&metadataPrefix=oai_cerif&set=publicacion&from=1
 ### - Última página: token vacío ("") indica fin de lista
 
 ### Formatos de identificadores OAI:
-### - Publicación: oai:rais.unmsm.edu.pe:publicacion/{id}
-### - Proyecto:    oai:rais.unmsm.edu.pe:proyecto/{id}
-### - Patente:     oai:rais.unmsm.edu.pe:patente/{id}
-### - Persona:     oai:rais.unmsm.edu.pe:persona/{id}
-### - Facultad:    oai:rais.unmsm.edu.pe:orgunit/facultad/{id}
-### - Instituto:   oai:rais.unmsm.edu.pe:orgunit/instituto/{id}
-### - Grupo:       oai:rais.unmsm.edu.pe:orgunit/grupo/{id}
+### - Publicación: oai:cris.unmsm.edu.pe:Publications/{id}
+### - Proyecto:    oai:cris.unmsm.edu.pe:Projects/{id}
+### - Patente:     oai:cris.unmsm.edu.pe:Patents/{id}
+### - Persona:     oai:cris.unmsm.edu.pe:Persons/{id}
+### - Facultad:    oai:cris.unmsm.edu.pe:OrgUnits/facultad-{id}
+### - Instituto:   oai:cris.unmsm.edu.pe:OrgUnits/instituto-{id}
+### - Grupo:       oai:cris.unmsm.edu.pe:OrgUnits/grupo-{id}

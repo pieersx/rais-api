@@ -14,11 +14,11 @@ function buildWhereClause(filters = {}) {
   const params = [];
 
   if (filters.set) {
-    if (filters.set.startsWith('patente:')) {
-      const setVal = filters.set.replace('patente:', '');
+    if (filters.set.startsWith('patents:')) {
+      const setVal = filters.set.replace('patents:', '');
       conditions.push('p.tipo = ?');
       params.push(setVal);
-    } else if (filters.set === 'patente') {
+    } else if (filters.set === 'patents') {
       // Parent set: todas las patentes (sin filtro de tipo)
     }
     // patentes no tienen facultad_id ni ocde_id, so facultad:/ocde: sets don't apply
